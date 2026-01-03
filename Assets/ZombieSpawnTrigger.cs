@@ -39,15 +39,18 @@ public class ZombieSpawnTrigger : MonoBehaviour
     {
         if (other.CompareTag("Zombie"))
         {
+            Zombie z = other.GetComponent<Zombie>();
             visibleZombies.Remove(other.gameObject);
-            Destroy(other.gameObject);
-        }  
+
+            if (z != null && z.isDead == false)
+            {
+                Destroy(other.gameObject);
+            }
+        }
     }
 
-    IEnumerator DestroyZombieAfterFrame(Collider other)
+    public void RemoveFromVisibleZombies(Zombie zombie)
     {
-        yield return new WaitForSeconds(0.1f);
-        Destroy(other.gameObject);
-        Debug.Log("Should destroy zombie");
+        visibleZombies.Remove(zombie.gameObject);
     }
 }

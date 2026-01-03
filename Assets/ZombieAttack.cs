@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class ZombieAttack : MonoBehaviour
@@ -10,10 +12,25 @@ public class ZombieAttack : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
+    {        
         if (other.CompareTag("Car"))
         {
-            animator.SetTrigger("Attack");
+            StartCoroutine(HandleAttackAnimation());
         }
+    }
+
+    IEnumerator HandleAttackAnimation()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (!GetComponentInParent<Zombie>().isDead)
+        {
+            animator.SetTrigger("Attack");  
+        }
+        
+    }
+
+    public void OnAttack()
+    {
+        Car.Instance.GetComponent<Health>().TakeDamage(5);
     }
 }
