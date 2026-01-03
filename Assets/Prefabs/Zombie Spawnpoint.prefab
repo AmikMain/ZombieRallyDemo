@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47128924a08819d4ca78b613cf2064cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zombiePrefab: {fileID: 3950030229388372481, guid: 417543e2863b7514bb43d3677adde8f0, type: 3}
   point1: {fileID: 5497687898419359633}
   point2: {fileID: 1642451483562086083}
 --- !u!65 &4126037098336714637
