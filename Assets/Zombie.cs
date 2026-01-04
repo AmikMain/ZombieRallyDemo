@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,16 +29,19 @@ public class Zombie : MonoBehaviour
     
     void HandleDeath()
     {
-        animator.SetTrigger("Dead");
+        animator.ResetTrigger("Dead");
         navMeshAgent.isStopped = true;
+        navMeshAgent.enabled = false;
         isDead = true;
+        GetComponentInChildren<RagdollEnabler>().EnableRagdoll();
+        GetComponent<CapsuleCollider>().enabled = false;
         Car.Instance.RemoveFromVisibleZombies(this);
         StartCoroutine(BeDestroyed());
     }
 
     public void SetTarget(Vector3 target)
     {
-        if (isDead) return;
+        if (isDead || navMeshAgent.enabled == false) return;
         navMeshAgent.SetDestination(target);
     }
 
