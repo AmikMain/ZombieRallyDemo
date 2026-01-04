@@ -31,6 +31,7 @@ public class Zombie : MonoBehaviour
     {
         animator.ResetTrigger("Dead");
         navMeshAgent.isStopped = true;
+        navMeshAgent.enabled = false;
         isDead = true;
         GetComponentInChildren<RagdollEnabler>().EnableRagdoll();
         GetComponent<CapsuleCollider>().enabled = false;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
     [SerializeField] private Transform zombieTarget;
-    [SerializeField] private float fatalSpeed;
+
     public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
 
@@ -36,13 +36,7 @@ public class Car : MonoBehaviour
         zombieTarget.position = transform.position;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Zombie") && GetComponent<Rigidbody>().linearVelocity.magnitude >= fatalSpeed)
-        {
-            collision.gameObject.GetComponent<Health>().TakeDamage(100);
-        }
-    }
+    
 
     public void RemoveFromVisibleZombies(Zombie zombie)
     {
