@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Car : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Car : MonoBehaviour
 
     public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
+    private PrometeoCarController prometeoCarController;
 
     void Awake()
     {
@@ -24,6 +26,7 @@ public class Car : MonoBehaviour
     void Start()
     {
         zombieSpawnTrigger = GetComponentInChildren<ZombieSpawnTrigger>();
+        prometeoCarController = GetComponent<PrometeoCarController>();
     }
 
     public Vector3 GetZombieTarget()
@@ -34,6 +37,16 @@ public class Car : MonoBehaviour
     void Update()
     {
         zombieTarget.position = transform.position;
+
+        if(Input.GetKey(KeyCode.F))
+        {
+            prometeoCarController.surfaceDriftMultiplier = 10f;
+        }
+        else
+        {
+            prometeoCarController.surfaceDriftMultiplier = 0.3f;
+        }
+
     }
 
     

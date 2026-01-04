@@ -18915,6 +18915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80814a0c176ae04c8dcbf09a6ddcd65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fatalSpeed: 10
 --- !u!4 &1186716851 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6121412346897229596, guid: 0de5387ac56913f409808a0c1eb20cce, type: 3}
@@ -22735,6 +22736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fefceefe666bb4682b272ec8c5bdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceDriftMultiplier: 0.3
   maxSpeed: 90
   maxReverseSpeed: 30
   accelerationMultiplier: 10
@@ -22742,7 +22744,8 @@ MonoBehaviour:
   steeringSpeed: 0.5
   brakeForce: 350
   decelerationMultiplier: 2
-  handbrakeDriftMultiplier: 5
+  handbrakeDriftMultiplier: 2
+  driftMultiplierEnvironment: 1.5
   bodyMassCenter: {x: 0, y: 0, z: 0}
   frontLeftMesh: {fileID: 520972001}
   frontLeftCollider: {fileID: 1028677727}
@@ -22865,7 +22868,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombieTarget: {fileID: 1468614629}
-  fatalSpeed: 10
 --- !u!4 &1415494452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6121412346897229596, guid: 0de5387ac56913f409808a0c1eb20cce, type: 3}

@@ -1,12 +1,3 @@
-/*
-MESSAGE FROM CREATOR: This script was coded by Mena. You can use it in your games either these are commercial or
-personal projects. You can even add or remove functions as you wish. However, you cannot sell copies of this
-script by itself, since it is originally distributed as a free product.
-I wish you the best for your project. Good luck!
-
-P.S: If you need more cars, you can check my other vehicle assets on the Unity Asset Store, perhaps you could find
-something useful for your game. Best regards, Mena.
-*/
 
 using System;
 using System.Collections;
@@ -14,8 +5,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PrometeoCarController : MonoBehaviour
 {
+      [Range(0.3f, 10f)]
+      public float surfaceDriftMultiplier = 5f;
+
+      // оригинальные (базовые) значения сцепления
+      float FLWextremumSlip_Original;
+      float FRWextremumSlip_Original;
+      float RLWextremumSlip_Original;
+      float RRWextremumSlip_Original;
 
     //CAR SETUP
 
@@ -40,6 +40,8 @@ public class PrometeoCarController : MonoBehaviour
       public int decelerationMultiplier = 2; // How fast the car decelerates when the user is not using the throttle.
       [Range(1, 10)]
       public int handbrakeDriftMultiplier = 5; // How much grip the car loses when the user hit the handbrake.
+      [Range(0.5f, 5f)]
+      public float driftMultiplierEnvironment = 1.5f;
       [Space(10)]
       public Vector3 bodyMassCenter; // This is a vector that contains the center of mass of the car. I recommend to set this value
                                     // in the points x = 0 and z = 0 of your car. You can select the value that you want in the y axis,
@@ -161,6 +163,12 @@ public class PrometeoCarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+      //MY SHIT
+      FLWextremumSlip_Original = frontLeftCollider.sidewaysFriction.extremumSlip;
+      FRWextremumSlip_Original = frontRightCollider.sidewaysFriction.extremumSlip;
+      RLWextremumSlip_Original = rearLeftCollider.sidewaysFriction.extremumSlip;
+      RRWextremumSlip_Original = rearRightCollider.sidewaysFriction.extremumSlip;
+
       //In this part, we set the 'carRigidbody' value with the Rigidbody attached to this
       //gameObject. Also, we define the center of mass of the car with the Vector3 given
       //in the inspector.
@@ -260,6 +268,7 @@ public class PrometeoCarController : MonoBehaviour
           }
         }
 
+      ApplySurfaceGrip();
     }
 
     // Update is called once per frame
@@ -363,6 +372,8 @@ public class PrometeoCarController : MonoBehaviour
           ResetSteeringAngle();
         }
 
+        ApplySurfaceGrip();
+
       }
 
 
@@ -370,6 +381,25 @@ public class PrometeoCarController : MonoBehaviour
       AnimateWheelMeshes();
 
     }
+
+    void ApplySurfaceGrip()
+  {
+      var fl = frontLeftCollider.sidewaysFriction;
+      fl.extremumSlip = FLWextremumSlip_Original * surfaceDriftMultiplier;
+      frontLeftCollider.sidewaysFriction = fl;
+
+      var fr = frontRightCollider.sidewaysFriction;
+      fr.extremumSlip = FRWextremumSlip_Original * surfaceDriftMultiplier;
+      frontRightCollider.sidewaysFriction = fr;
+
+      var rl = rearLeftCollider.sidewaysFriction;
+      rl.extremumSlip = RLWextremumSlip_Original * surfaceDriftMultiplier;
+      rearLeftCollider.sidewaysFriction = rl;
+
+      var rr = rearRightCollider.sidewaysFriction;
+      rr.extremumSlip = RRWextremumSlip_Original * surfaceDriftMultiplier;
+      rearRightCollider.sidewaysFriction = rr;
+  }
 
     // This method converts the car speed data from float to string, and then set the text of the UI carSpeedText with this value.
     public void CarSpeedUI(){
@@ -663,16 +693,32 @@ public class PrometeoCarController : MonoBehaviour
       //value, so, we are going to continue increasing the sideways friction of the wheels until driftingAxis
       // = 1f.
       if(driftingAxis < 1f){
-        FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        FLwheelFriction.extremumSlip =
+            FLWextremumSlip_Original
+            * surfaceDriftMultiplier
+            * handbrakeDriftMultiplier
+            * driftingAxis;
         frontLeftCollider.sidewaysFriction = FLwheelFriction;
 
-        FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        FRwheelFriction.extremumSlip =
+            FRWextremumSlip_Original
+            * surfaceDriftMultiplier
+            * handbrakeDriftMultiplier
+            * driftingAxis;
         frontRightCollider.sidewaysFriction = FRwheelFriction;
 
-        RLwheelFriction.extremumSlip = RLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        RLwheelFriction.extremumSlip =
+            RLWextremumSlip_Original
+            * surfaceDriftMultiplier
+            * handbrakeDriftMultiplier
+            * driftingAxis;
         rearLeftCollider.sidewaysFriction = RLwheelFriction;
 
-        RRwheelFriction.extremumSlip = RRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        RRwheelFriction.extremumSlip =
+            RLWextremumSlip_Original
+            * surfaceDriftMultiplier
+            * handbrakeDriftMultiplier
+            * driftingAxis;
         rearRightCollider.sidewaysFriction = RRwheelFriction;
       }
 
@@ -729,7 +775,34 @@ public class PrometeoCarController : MonoBehaviour
     }
 
     // This function is used to recover the traction of the car when the user has stopped using the car's handbrake.
-    public void RecoverTraction(){
+    void RecoverTraction()
+    {
+        isTractionLocked = false;
+
+        driftingAxis -= Time.deltaTime / 1.5f;
+        driftingAxis = Mathf.Clamp01(driftingAxis);
+
+        float targetSlip = FLWextremumSlip_Original * surfaceDriftMultiplier;
+
+        FLwheelFriction.extremumSlip =
+            Mathf.Lerp(FLwheelFriction.extremumSlip, targetSlip, Time.deltaTime * 5f);
+        frontLeftCollider.sidewaysFriction = FLwheelFriction;
+
+        FRwheelFriction.extremumSlip =
+            Mathf.Lerp(FRwheelFriction.extremumSlip, targetSlip, Time.deltaTime * 5f);
+        frontRightCollider.sidewaysFriction = FRwheelFriction;
+
+        RLwheelFriction.extremumSlip =
+            Mathf.Lerp(RLwheelFriction.extremumSlip, targetSlip, Time.deltaTime * 5f);
+        rearLeftCollider.sidewaysFriction = RLwheelFriction;
+
+        RRwheelFriction.extremumSlip =
+            Mathf.Lerp(RRwheelFriction.extremumSlip, targetSlip, Time.deltaTime * 5f);
+        rearRightCollider.sidewaysFriction = RRwheelFriction;
+    }
+
+}
+    /*public void RecoverTraction(){
       isTractionLocked = false;
       driftingAxis = driftingAxis - (Time.deltaTime / 1.5f);
       if(driftingAxis < 0f){
@@ -740,10 +813,10 @@ public class PrometeoCarController : MonoBehaviour
       //We are going to continue decreasing the sideways friction of the wheels until we reach the initial
       // car's grip.
       if(FLwheelFriction.extremumSlip > FLWextremumSlip){
-        FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis ;
         frontLeftCollider.sidewaysFriction = FLwheelFriction;
 
-        FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+        FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis ;
         frontRightCollider.sidewaysFriction = FRwheelFriction;
 
         RLwheelFriction.extremumSlip = RLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
@@ -769,6 +842,4 @@ public class PrometeoCarController : MonoBehaviour
 
         driftingAxis = 0f;
       }
-    }
-
-}
+    }*/
