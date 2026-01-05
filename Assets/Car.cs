@@ -46,7 +46,6 @@ public class Car : MonoBehaviour
         {
             prometeoCarController.surfaceDriftMultiplier = 0.3f;
         }
-
     }
 
     
