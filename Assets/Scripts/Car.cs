@@ -6,10 +6,13 @@ using UnityEngine.InputSystem;
 public class Car : MonoBehaviour
 {
     [SerializeField] private Transform zombieTarget;
+    [SerializeField] private float tarmacSurfaceDriftMp = 2;
+    [SerializeField] private float gravelSurfaceDriftMp = 5;
 
     public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
+    private TerrainDetection terrainDetection;
 
     void Awake()
     {
@@ -21,6 +24,17 @@ public class Car : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    void OnEnable()
+    {
+        terrainDetection = GetComponentInChildren<TerrainDetection>();
+        terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
+    }
+
+    void OnDisable()
+    {
+        terrainDetection.OnTerrainChanged -= ChangeTerrainModifiers;
     }
 
     void Start()
@@ -37,18 +51,22 @@ public class Car : MonoBehaviour
     void Update()
     {
         zombieTarget.position = transform.position;
-
-        if(Input.GetKey(KeyCode.F))
-        {
-            prometeoCarController.surfaceDriftMultiplier = 10f;
-        }
-        else
-        {
-            prometeoCarController.surfaceDriftMultiplier = 0.3f;
-        }
     }
 
-    
+    void ChangeTerrainModifiers(TerrainType type)
+    {
+        if (type == TerrainType.Tarmac)
+        {
+            prometeoCarController.surfaceDriftMultiplier = tarmacSurfaceDriftMp;
+        }
+        else if (type == TerrainType.Gravel)
+        {
+            prometeoCarController.surfaceDriftMultiplier = gravelSurfaceDriftMp;
+        }
+
+
+        
+    }
 
     public void RemoveFromVisibleZombies(Zombie zombie)
     {
