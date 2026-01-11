@@ -383,23 +383,28 @@ public class PrometeoCarController : MonoBehaviour
     }
 
     void ApplySurfaceGrip()
-  {
-      var fl = frontLeftCollider.sidewaysFriction;
-      fl.extremumSlip = FLWextremumSlip_Original * surfaceDriftMultiplier;
-      frontLeftCollider.sidewaysFriction = fl;
+    {
+        float multiplier = surfaceDriftMultiplier;
+        if (isTractionLocked){
+            multiplier *= handbrakeDriftMultiplier;
+        }
 
-      var fr = frontRightCollider.sidewaysFriction;
-      fr.extremumSlip = FRWextremumSlip_Original * surfaceDriftMultiplier;
-      frontRightCollider.sidewaysFriction = fr;
+        var fl = frontLeftCollider.sidewaysFriction;
+        fl.extremumSlip = FLWextremumSlip_Original * multiplier;
+        frontLeftCollider.sidewaysFriction = fl;
 
-      var rl = rearLeftCollider.sidewaysFriction;
-      rl.extremumSlip = RLWextremumSlip_Original * surfaceDriftMultiplier;
-      rearLeftCollider.sidewaysFriction = rl;
+        var fr = frontRightCollider.sidewaysFriction;
+        fr.extremumSlip = FRWextremumSlip_Original * multiplier;
+        frontRightCollider.sidewaysFriction = fr;
 
-      var rr = rearRightCollider.sidewaysFriction;
-      rr.extremumSlip = RRWextremumSlip_Original * surfaceDriftMultiplier;
-      rearRightCollider.sidewaysFriction = rr;
-  }
+        var rl = rearLeftCollider.sidewaysFriction;
+        rl.extremumSlip = RLWextremumSlip_Original * multiplier;
+        rearLeftCollider.sidewaysFriction = rl;
+
+        var rr = rearRightCollider.sidewaysFriction;
+        rr.extremumSlip = RRWextremumSlip_Original * multiplier;
+        rearRightCollider.sidewaysFriction = rr;
+    }
 
     // This method converts the car speed data from float to string, and then set the text of the UI carSpeedText with this value.
     public void CarSpeedUI(){
@@ -802,44 +807,3 @@ public class PrometeoCarController : MonoBehaviour
     }
 
 }
-    /*public void RecoverTraction(){
-      isTractionLocked = false;
-      driftingAxis = driftingAxis - (Time.deltaTime / 1.5f);
-      if(driftingAxis < 0f){
-        driftingAxis = 0f;
-      }
-
-      //If the 'driftingAxis' value is not 0f, it means that the wheels have not recovered their traction.
-      //We are going to continue decreasing the sideways friction of the wheels until we reach the initial
-      // car's grip.
-      if(FLwheelFriction.extremumSlip > FLWextremumSlip){
-        FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis ;
-        frontLeftCollider.sidewaysFriction = FLwheelFriction;
-
-        FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis ;
-        frontRightCollider.sidewaysFriction = FRwheelFriction;
-
-        RLwheelFriction.extremumSlip = RLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
-        rearLeftCollider.sidewaysFriction = RLwheelFriction;
-
-        RRwheelFriction.extremumSlip = RRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
-        rearRightCollider.sidewaysFriction = RRwheelFriction;
-
-        Invoke("RecoverTraction", Time.deltaTime);
-
-      }else if (FLwheelFriction.extremumSlip < FLWextremumSlip){
-        FLwheelFriction.extremumSlip = FLWextremumSlip;
-        frontLeftCollider.sidewaysFriction = FLwheelFriction;
-
-        FRwheelFriction.extremumSlip = FRWextremumSlip;
-        frontRightCollider.sidewaysFriction = FRwheelFriction;
-
-        RLwheelFriction.extremumSlip = RLWextremumSlip;
-        rearLeftCollider.sidewaysFriction = RLwheelFriction;
-
-        RRwheelFriction.extremumSlip = RRWextremumSlip;
-        rearRightCollider.sidewaysFriction = RRwheelFriction;
-
-        driftingAxis = 0f;
-      }
-    }*/
