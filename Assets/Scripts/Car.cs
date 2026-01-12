@@ -13,6 +13,7 @@ public class Car : MonoBehaviour
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
     private TerrainDetection terrainDetection;
+    private Health health;
 
     void Awake()
     {
@@ -29,12 +30,21 @@ public class Car : MonoBehaviour
     void OnEnable()
     {
         terrainDetection = GetComponentInChildren<TerrainDetection>();
+        health = GetComponent<Health>();
+
         terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
+        health.OnDie += HandleDeath;
+    }
+
+    private void HandleDeath()
+    {
+        Debug.Log("CAR DIED");
     }
 
     void OnDisable()
     {
         terrainDetection.OnTerrainChanged -= ChangeTerrainModifiers;
+        health.OnDie -= HandleDeath;
     }
 
     void Start()
@@ -63,11 +73,9 @@ public class Car : MonoBehaviour
         {
             prometeoCarController.surfaceDriftMultiplier = gravelSurfaceDriftMp;
         }
-
-
-        
     }
 
+    
     public void RemoveFromVisibleZombies(Zombie zombie)
     {
         zombieSpawnTrigger.RemoveFromVisibleZombies(zombie);
