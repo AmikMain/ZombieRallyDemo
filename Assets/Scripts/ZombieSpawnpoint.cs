@@ -8,7 +8,7 @@ public class ZombieSpawnpoint : MonoBehaviour
 
     void Start()
     {
-        point1.position = Vector3.Lerp(point1.position, this.transform.position, UnityEngine.Random.Range(0f,1f));
+        point1.position = Vector3.Lerp(point1.position, this.transform.position, UnityEngine.Random.Range(0f, 1f));
         point2.position = Vector3.Lerp(point2.position, this.transform.position, UnityEngine.Random.Range(0f,1f));
     }
 

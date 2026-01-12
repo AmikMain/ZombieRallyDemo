@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f1f4fe0226f69469f123123ab5c223, type: 3}
+  m_Name: ArmorDataLVL1 2
+  m_EditorClassIdentifier: 
+  armorLevel: 1
+  additionalHealth: 15
+  prefab: {fileID: 2286284544445659852, guid: d88fdf527f0ac2348afa8f850c4ac372, type: 3}
