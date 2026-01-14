@@ -8,6 +8,7 @@ public class Car : MonoBehaviour
     [SerializeField] private Transform zombieTarget;
     [SerializeField] private float tarmacSurfaceDriftMp = 2;
     [SerializeField] private float gravelSurfaceDriftMp = 5;
+    [SerializeField] private Vector3 lapSpawnPoint;
 
     public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
@@ -32,17 +33,14 @@ public class Car : MonoBehaviour
         terrainDetection = GetComponentInChildren<TerrainDetection>();
         health = GetComponent<Health>();
 
+        GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
         terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
         health.OnDie += HandleDeath;
     }
 
-    private void HandleDeath()
-    {
-        Debug.Log("CAR DIED");
-    }
-
     void OnDisable()
     {
+        GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
         terrainDetection.OnTerrainChanged -= ChangeTerrainModifiers;
         health.OnDie -= HandleDeath;
     }
@@ -51,6 +49,21 @@ public class Car : MonoBehaviour
     {
         zombieSpawnTrigger = GetComponentInChildren<ZombieSpawnTrigger>();
         prometeoCarController = GetComponent<PrometeoCarController>();
+    }
+
+    private void TeleportToLapStartDelayed()
+    {
+        Invoke(nameof(TeleportToLapStart), .5f );
+    }
+
+    private void TeleportToLapStart()
+    {
+        transform.position = lapSpawnPoint;
+    }
+
+    private void HandleDeath()
+    {
+        Debug.Log("CAR DIED");
     }
 
     public Vector3 GetZombieTarget()
