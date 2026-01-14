@@ -6,7 +6,26 @@ using UnityEngine;
 public class ZombieSpawnTrigger : MonoBehaviour
 {
     [SerializeField] float zombieNoticingDistance = 40;
+    [SerializeField] float zombieSpawnRadius = 150;
     List<GameObject> visibleZombies = new List<GameObject>();
+    SphereCollider sphereCollider;
+
+    void Start()
+    {
+        sphereCollider = GetComponent<SphereCollider>();
+
+        sphereCollider.radius = .1f;
+    }
+
+    void OnEnable()
+    {
+        GameManager.Instance.OnLapStart += SetZombieSpawnSphereRadius;
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.OnLapStart -= SetZombieSpawnSphereRadius;
+    }
 
     void Update()
     {
@@ -47,6 +66,11 @@ public class ZombieSpawnTrigger : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+
+    void SetZombieSpawnSphereRadius()
+    {
+        sphereCollider.radius = zombieSpawnRadius;
     }
 
     public void RemoveFromVisibleZombies(Zombie zombie)
