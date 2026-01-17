@@ -61,7 +61,7 @@ public class Car : MonoBehaviour
         transform.position = lapSpawnPoint;
     }
 
-    private void HandleDeath()
+    private void HandleDeath(DeathType type)
     {
         Debug.Log("CAR DIED");
     }

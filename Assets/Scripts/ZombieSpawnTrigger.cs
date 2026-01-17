@@ -63,7 +63,7 @@ public class ZombieSpawnTrigger : MonoBehaviour
 
             if (z != null && z.isDead == false)
             {
-                Destroy(other.gameObject);
+                z.GetComponent<Health>().TakeDamage(1000, DeathType.Culling);
             }
         }
     }
