@@ -9,6 +9,8 @@ public class GameStats : MonoBehaviour
     [SerializeField] private SplineContainer tarmacRoad;
     [SerializeField] private SplineContainer gravelRoad;
     [SerializeField, Range(0f, 1f)]
+
+    private float lapPercent;
     private float startT = 0.057f;
 
     private float maxTarmac = 0f;
@@ -84,8 +86,7 @@ public class GameStats : MonoBehaviour
         maxTarmac * tarmacWeight +
         maxGravel * gravelWeight;
 
-    float percent = totalProgress * 100f;
-    //Debug.Log($"Прогресс трассы: {percent:0.0}%");
+    lapPercent = totalProgress * 100f;
 }
 
     float GetSplineLengthFromT(Spline spline, float fromT, int steps = 100)
@@ -107,6 +108,16 @@ public class GameStats : MonoBehaviour
     public void HandleZombieKill()
     {
         zombiesKilled++;
+    }
+
+    public float GetLapPercent()
+    {
+        return lapPercent;
+    }
+
+    public int GetZombiesKilled()
+    {
+        return zombiesKilled;
     }
 
 }
