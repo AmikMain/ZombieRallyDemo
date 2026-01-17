@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZombieAttack : MonoBehaviour
 {
     Animator animator;
+    public bool carWithinReach = false;
 
     void Start()
     {
@@ -15,7 +16,16 @@ public class ZombieAttack : MonoBehaviour
     {        
         if (other.CompareTag("Car"))
         {
+            carWithinReach = true;
             StartCoroutine(HandleAttackAnimation());
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {        
+        if (other.CompareTag("Car"))
+        {
+            carWithinReach = false;
         }
     }
 
@@ -26,11 +36,11 @@ public class ZombieAttack : MonoBehaviour
         {
             animator.SetTrigger("Attack");  
         }
-        
     }
 
     public void OnAttack()
     {
-        Car.Instance.GetComponent<Health>().TakeDamage(5);
+        if(!carWithinReach) return;
+        Car.Instance.GetComponent<Health>().TakeDamage(5, DeathType.Kill);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,12 @@ using UnityEngine.AI;
 
 public class Zombie : MonoBehaviour
 {
+    GameStats gameStats;
+
+    public event Action OnDieByKilling;
+
     public bool isDead = false;
+    
     NavMeshAgent navMeshAgent;
     Health healthComponent;
     Animator animator;
@@ -20,6 +26,18 @@ public class Zombie : MonoBehaviour
         healthComponent.OnDie += HandleDeath;
     }
 
+    void OnEnable()
+    {
+        gameStats = GameStats.Instance;
+
+        OnDieByKilling += gameStats.HandleZombieKill;
+    }
+
+    void OnDisable()
+    {
+        OnDieByKilling -= gameStats.HandleZombieKill;
+    }
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -27,16 +45,32 @@ public class Zombie : MonoBehaviour
         myCollider = GetComponent<Collider>();
     }
     
-    void HandleDeath()
+    void HandleDeath(DeathType type)
     {
-        animator.ResetTrigger("Dead");
-        navMeshAgent.isStopped = true;
-        navMeshAgent.enabled = false;
-        isDead = true;
-        GetComponentInChildren<RagdollEnabler>().EnableRagdoll();
-        GetComponent<CapsuleCollider>().enabled = false;
-        Car.Instance.RemoveFromVisibleZombies(this);
-        StartCoroutine(BeDestroyed());
+        if(type == DeathType.Culling)
+        {
+            Destroy(this.gameObject);
+            Debug.Log("Culling zombie " + UnityEngine.Random.Range(0f , 1f).ToString());
+        }
+        else if (DeathType.Kill == type)
+        {
+            isDead = true;
+            
+            animator.ResetTrigger("Dead");
+
+            navMeshAgent.isStopped = true;
+            navMeshAgent.enabled = false;
+            
+            GetComponentInChildren<RagdollEnabler>().EnableRagdoll();
+
+            GetComponent<CapsuleCollider>().enabled = false;
+
+            Car.Instance.RemoveFromVisibleZombies(this);
+
+            OnDieByKilling?.Invoke();
+
+            StartCoroutine(BeDestroyed());
+        }
     }
 
     public void SetTarget(Vector3 target)
@@ -50,4 +84,10 @@ public class Zombie : MonoBehaviour
         yield return new WaitForSeconds(5f);
         Destroy(this.gameObject);
     }
+}
+
+public enum DeathType
+{
+    Culling,
+    Kill
 }

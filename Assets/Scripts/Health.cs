@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int currentHealth;
     private int maxHealth;
 
-    public event Action OnDie;
+    public event Action<DeathType> OnDie;
     public event Action<int> OnHealthChanged;
 
     void Start()
@@ -22,19 +22,19 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, DeathType deathType)
     {
         OnHealthChanged?.Invoke(currentHealth);
 
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            Die();
+            Die(deathType);
         }
     }
 
-    public void Die()
+    public void Die(DeathType deathType)
     {
-        OnDie?.Invoke();
+        OnDie?.Invoke(deathType);
     }
 }

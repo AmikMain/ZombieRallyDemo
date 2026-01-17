@@ -6,7 +6,7 @@ public class ZombieDeathTrigger : MonoBehaviour, IDamageTrigger
 
     public void DealDamage(Collider other, int amount)
     {
-        other.gameObject.GetComponent<Health>().TakeDamage(amount);
+        other.gameObject.GetComponent<Health>().TakeDamage(amount, DeathType.Kill);
     }
 
     void OnTriggerEnter(Collider other)
