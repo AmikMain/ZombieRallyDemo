@@ -7,7 +7,7 @@ public class Armor : MonoBehaviour
 
     void Start()
     {
-        SetArmor(2);
+        //SetArmor(0);
     }
 
     private void SetArmor(int lvl)
