@@ -37,4 +37,14 @@ public class Health : MonoBehaviour
     {
         OnDie?.Invoke(deathType);
     }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
 }

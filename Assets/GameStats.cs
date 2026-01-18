@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -21,6 +22,8 @@ public class GameStats : MonoBehaviour
 
     [SerializeField] private int zombiesKilled = 0;
 
+    private int lapEndMoney = 0;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,6 +38,8 @@ public class GameStats : MonoBehaviour
 
     void Start()
     {
+        Car.Instance.OnCarDied += CalculateLapEndMoney;
+
         float tarmacLength =
             GetSplineLengthFromT(tarmacRoad.Spline, startT);
 
@@ -45,6 +50,11 @@ public class GameStats : MonoBehaviour
 
         tarmacWeight = tarmacLength / total;
         gravelWeight = gravelLength / total;
+    }
+
+    void OnDisable()
+    {
+        Car.Instance.OnCarDied -= CalculateLapEndMoney;
     }
 
     void Update()
@@ -105,6 +115,12 @@ public class GameStats : MonoBehaviour
         return length;
     }
 
+    private void CalculateLapEndMoney()
+    {
+        Debug.Log($"{zombiesKilled}, { (float)zombiesKilled * (float)lapPercent / 10f }");
+        lapEndMoney = Mathf.RoundToInt((float)zombiesKilled + (float)zombiesKilled * (float)lapPercent / 10f);
+    }
+
     public void HandleZombieKill()
     {
         zombiesKilled++;
@@ -118,6 +134,11 @@ public class GameStats : MonoBehaviour
     public int GetZombiesKilled()
     {
         return zombiesKilled;
+    }
+
+    public int GetLapEndMoney()
+    {
+        return lapEndMoney;
     }
 
 }

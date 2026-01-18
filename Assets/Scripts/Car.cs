@@ -15,6 +15,9 @@ public class Car : MonoBehaviour
     private PrometeoCarController prometeoCarController;
     private TerrainDetection terrainDetection;
     private Health health;
+    
+    public event Action OnCarDied;
+    bool isDead = false;
 
     void Awake()
     {
@@ -63,7 +66,9 @@ public class Car : MonoBehaviour
 
     private void HandleDeath(DeathType type)
     {
-        Debug.Log("CAR DIED");
+        if(isDead) return;
+        OnCarDied?.Invoke();
+        isDead = true;
     }
 
     public Vector3 GetZombieTarget()
