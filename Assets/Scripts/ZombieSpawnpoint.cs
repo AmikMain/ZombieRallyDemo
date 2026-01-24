@@ -14,7 +14,7 @@ public class ZombieSpawnpoint : MonoBehaviour
 
     public void SpawnZombies()
     {
-        Instantiate(zombiePrefab, point1.position, Quaternion.identity);
-        Instantiate(zombiePrefab, point2.position, Quaternion.identity);
+        Instantiate(zombiePrefab, point1.position, Quaternion.identity, GameManager.Instance.zombieParent.transform);
+        Instantiate(zombiePrefab, point2.position, Quaternion.identity, GameManager.Instance.zombieParent.transform);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,6 +37,8 @@ public class Zombie : MonoBehaviour
     void OnDisable()
     {
         OnDieByKilling -= gameStats.HandleZombieKill;
+
+        Car.Instance.RemoveFromVisibleZombies(this);
     }
 
     void Start()

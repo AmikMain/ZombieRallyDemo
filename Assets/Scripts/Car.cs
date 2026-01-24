@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Car : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float tarmacSurfaceDriftMp = 2;
     [SerializeField] private float gravelSurfaceDriftMp = 5;
     [SerializeField] private Vector3 lapSpawnPoint;
+    [SerializeField] private Vector3 garagePoint;
 
     public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
@@ -37,13 +40,15 @@ public class Car : MonoBehaviour
         health = GetComponent<Health>();
 
         GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
+        GameManager.Instance.OnLapReload += TeleportToGarage;
         terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
         health.OnDie += HandleDeath;
     }
 
     void OnDisable()
     {
-        GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
+        GameManager.Instance.OnLapStart -= TeleportToLapStartDelayed;
+        GameManager.Instance.OnLapReload -= TeleportToGarage;
         terrainDetection.OnTerrainChanged -= ChangeTerrainModifiers;
         health.OnDie -= HandleDeath;
     }
@@ -67,6 +72,8 @@ public class Car : MonoBehaviour
     private void HandleDeath(DeathType type)
     {
         if(isDead) return;
+
+        Debug.Log($"OnCarDied listeners: {OnCarDied?.GetInvocationList().Length}");
         OnCarDied?.Invoke();
         isDead = true;
     }
@@ -93,6 +100,14 @@ public class Car : MonoBehaviour
         }
     }
 
+    void TeleportToGarage()
+    {
+        transform.position = garagePoint;
+
+        transform.rotation = Quaternion.identity;
+
+        health.ResetHealth();
+    }
     
     public void RemoveFromVisibleZombies(Zombie zombie)
     {

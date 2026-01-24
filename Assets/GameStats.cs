@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -9,7 +10,7 @@ public class GameStats : MonoBehaviour
     [SerializeField] private Transform car;
     [SerializeField] private SplineContainer tarmacRoad;
     [SerializeField] private SplineContainer gravelRoad;
-    [SerializeField, Range(0f, 1f)]
+    public string COIN_BANK_AMOUNT = "COIN_BANK_AMOUNT";
 
     private float lapPercent;
     private float startT = 0.057f;
@@ -38,6 +39,8 @@ public class GameStats : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetInt(COIN_BANK_AMOUNT, 0);//DELETE
+
         Car.Instance.OnCarDied += CalculateLapEndMoney;
 
         float tarmacLength =
@@ -119,6 +122,8 @@ public class GameStats : MonoBehaviour
     {
         Debug.Log($"{zombiesKilled}, { (float)zombiesKilled * (float)lapPercent / 10f }");
         lapEndMoney = Mathf.RoundToInt((float)zombiesKilled + (float)zombiesKilled * (float)lapPercent / 10f);
+
+        AddMoneyToBank(lapEndMoney);
     }
 
     public void HandleZombieKill()
@@ -139,6 +144,14 @@ public class GameStats : MonoBehaviour
     public int GetLapEndMoney()
     {
         return lapEndMoney;
+    }
+
+    private void AddMoneyToBank(int m)
+    {
+        int currentAmount = PlayerPrefs.GetInt(COIN_BANK_AMOUNT, 0);
+        PlayerPrefs.SetInt(COIN_BANK_AMOUNT, currentAmount + m);
+        
+        Debug.Log("Adding money to bank called");    
     }
 
 }

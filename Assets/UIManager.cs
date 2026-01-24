@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_Text zombiesKilledUIText;
     [SerializeField] Image healthImage;
     [SerializeField] TMP_Text lapEndMoneyText;
+    [SerializeField] TMP_Text moneyBankText;
     private GameStats gameStats;
     private GameManager gameManager;
     private Car car;
@@ -114,14 +115,15 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
+        GameManager.Instance.canReloadLap = true;
+
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
+
         for(int i = 0; i < gameStats.GetLapEndMoney(); i++ )
         {
             yield return null;
             yield return null;
             lapEndMoneyText.text = i.ToString();            
         }
-
-        
-
     }
 }
