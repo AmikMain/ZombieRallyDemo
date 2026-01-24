@@ -7,6 +7,7 @@ public class ZombieSpawnTrigger : MonoBehaviour
 {
     [SerializeField] float zombieNoticingDistance = 40;
     [SerializeField] float zombieSpawnRadius = 150;
+    [SerializeField] float initialRadius = .5f;
     List<GameObject> visibleZombies = new List<GameObject>();
     SphereCollider sphereCollider;
 
@@ -14,17 +15,19 @@ public class ZombieSpawnTrigger : MonoBehaviour
     {
         sphereCollider = GetComponent<SphereCollider>();
 
-        sphereCollider.radius = .1f;
+        sphereCollider.radius = initialRadius;
     }
 
     void OnEnable()
     {
         GameManager.Instance.OnLapStart += SetZombieSpawnSphereRadius;
+        GameManager.Instance.OnLapReload += HandleLapReload;
     }
 
     void OnDisable()
     {
         GameManager.Instance.OnLapStart -= SetZombieSpawnSphereRadius;
+        GameManager.Instance.OnLapReload -= HandleLapReload;
     }
 
     void Update()
@@ -71,6 +74,13 @@ public class ZombieSpawnTrigger : MonoBehaviour
     void SetZombieSpawnSphereRadius()
     {
         sphereCollider.radius = zombieSpawnRadius;
+    }
+
+    void HandleLapReload()
+    {
+        sphereCollider.radius = initialRadius;
+
+        visibleZombies = new List<GameObject>();
     }
 
     public void RemoveFromVisibleZombies(Zombie zombie)

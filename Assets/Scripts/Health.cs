@@ -47,4 +47,9 @@ public class Health : MonoBehaviour
     {
         return maxHealth;
     }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
 }

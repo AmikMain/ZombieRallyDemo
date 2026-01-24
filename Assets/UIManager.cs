@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_Text zombiesKilledUIText;
     [SerializeField] Image healthImage;
     [SerializeField] TMP_Text lapEndMoneyText;
+    [SerializeField] TMP_Text moneyBankText;
     private GameStats gameStats;
     private GameManager gameManager;
     private Car car;
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
         carHealth = car.GetComponent<Health>();
 
         gameManager.OnLapStart += HandleLapStart;
+        gameManager.OnLapReload += HandleLapReload;
         car.OnCarDied += HandleCarDeath;
     }
 
@@ -51,6 +53,7 @@ public class UIManager : MonoBehaviour
     {
         gameManager.OnLapStart -= HandleLapStart;
         car.OnCarDied -= HandleCarDeath;
+        gameManager.OnLapReload -= HandleLapReload;
     }
 
     void Update()
@@ -75,10 +78,9 @@ public class UIManager : MonoBehaviour
         healthImage.fillAmount = Mathf.Lerp(0f, 1f, (float)carHealth.GetCurrentHealth() / (float)carHealth.GetMaxHealth());       
     }
 
-
-
     private void HandleLapStart()
     {
+        StartFadeCoroutine(garageCanvasGroup, 1, 0, fadeAnimationDuration, 0f);
         StartFadeCoroutine(lapCanvasGroup, 0, 1, fadeAnimationDuration, 2f);      
     }
 
@@ -89,6 +91,12 @@ public class UIManager : MonoBehaviour
 
 
         StartCoroutine(SetLapEndMoneyText());
+    }
+
+    private void HandleLapReload()
+    {
+        StartFadeCoroutine(deathCanvasGroup, 1, 0, fadeAnimationDuration, 0);
+        StartFadeCoroutine(garageCanvasGroup, 0, 1, fadeAnimationDuration, fadeAnimationDuration + 0.5f);
     }
 
     public void StartFadeCoroutine(CanvasGroup cg, float start, float end, float duration, float wait)
@@ -108,11 +116,25 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         cg.alpha = to;
+        
+        if(to == 0)
+        {
+            cg.blocksRaycasts = false;
+        }
+
+        if(to == 1)
+        {
+            cg.blocksRaycasts = true;
+        }
     }
 
     private IEnumerator SetLapEndMoneyText()
     {
         yield return new WaitForSeconds(3f);
+
+        GameManager.Instance.canReloadLap = true;
+
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
 
         for(int i = 0; i < gameStats.GetLapEndMoney(); i++ )
         {
@@ -120,8 +142,5 @@ public class UIManager : MonoBehaviour
             yield return null;
             lapEndMoneyText.text = i.ToString();            
         }
-
-        
-
     }
 }
