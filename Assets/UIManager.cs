@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
         carHealth = car.GetComponent<Health>();
 
         gameManager.OnLapStart += HandleLapStart;
+        gameManager.OnLapReload += HandleLapReload;
         car.OnCarDied += HandleCarDeath;
     }
 
@@ -52,6 +53,7 @@ public class UIManager : MonoBehaviour
     {
         gameManager.OnLapStart -= HandleLapStart;
         car.OnCarDied -= HandleCarDeath;
+        gameManager.OnLapReload -= HandleLapReload;
     }
 
     void Update()
@@ -76,10 +78,9 @@ public class UIManager : MonoBehaviour
         healthImage.fillAmount = Mathf.Lerp(0f, 1f, (float)carHealth.GetCurrentHealth() / (float)carHealth.GetMaxHealth());       
     }
 
-
-
     private void HandleLapStart()
     {
+        StartFadeCoroutine(garageCanvasGroup, 1, 0, fadeAnimationDuration, 0f);
         StartFadeCoroutine(lapCanvasGroup, 0, 1, fadeAnimationDuration, 2f);      
     }
 
@@ -90,6 +91,12 @@ public class UIManager : MonoBehaviour
 
 
         StartCoroutine(SetLapEndMoneyText());
+    }
+
+    private void HandleLapReload()
+    {
+        StartFadeCoroutine(deathCanvasGroup, 1, 0, fadeAnimationDuration, 0);
+        StartFadeCoroutine(garageCanvasGroup, 0, 1, fadeAnimationDuration, fadeAnimationDuration + 0.5f);
     }
 
     public void StartFadeCoroutine(CanvasGroup cg, float start, float end, float duration, float wait)
@@ -109,6 +116,16 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         cg.alpha = to;
+        
+        if(to == 0)
+        {
+            cg.blocksRaycasts = false;
+        }
+
+        if(to == 1)
+        {
+            cg.blocksRaycasts = true;
+        }
     }
 
     private IEnumerator SetLapEndMoneyText()

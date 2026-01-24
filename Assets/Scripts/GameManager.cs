@@ -26,10 +26,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        OnLapStart += CursorSetUnactive;
+        OnLapReload += CursorSetActive;
+    }
 
-        Invoke(nameof(StartLap), 2f);
+    void OnDisable()
+    {
+        OnLapStart -= CursorSetUnactive;
+        OnLapReload -= CursorSetActive;
     }
 
     void Update()
@@ -49,6 +53,18 @@ public class GameManager : MonoBehaviour
     public void StartLap()
     {
         OnLapStart?.Invoke();
+    }
+
+    public void CursorSetActive()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void CursorSetUnactive()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void ReloadLap()
