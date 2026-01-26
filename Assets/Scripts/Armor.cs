@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Armor : MonoBehaviour
 {
+    public string ARMOR_LVL_KEY = "ARMOR_LVL";
     [SerializeField] private ArmorData[] modules;
 
     void Start()

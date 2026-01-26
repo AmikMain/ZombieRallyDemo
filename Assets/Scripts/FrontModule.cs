@@ -1,16 +1,26 @@
+using System;
 using UnityEngine;
 
 public class FrontModule : MonoBehaviour, IDamageTrigger
 {
+    
+    public string FRONT_MODULE_LVL_KEY = "FRONT_MODULE_LVL";
+
     [SerializeField] private FrontModuleData[] modules;
     private float fatalSpeed = 10;
     private bool constantDamage = false; //chainsaw
+    public event Action OnFrontModuleUpdated;
+
+    void Awake()
+    {
+        PlayerPrefs.DeleteAll();   
+    }
 
     void Start()
     {
-        SetFrontModule(FrontModuleType.LVL1);
+        
     }
-    
+
     public void DealDamage(Collider other, int amount)
     {
         other.gameObject.GetComponent<Health>().TakeDamage(amount, DeathType.Kill);
@@ -36,7 +46,7 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
         }
     }
 
-    public void SetFrontModule(FrontModuleType frontModuleType)
+    public void SetFrontModule(int frontModuleType)
     {
         FrontModuleData frontModuleData = GetModuleByType(frontModuleType);
 
@@ -45,17 +55,45 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
 
         Instantiate(frontModuleData.prefab, this.gameObject.transform);
 
+        PlayerPrefs.SetInt(FRONT_MODULE_LVL_KEY, frontModuleType);
     }
 
-    public FrontModuleData GetModuleByType(FrontModuleType type)
+    public FrontModuleData GetModuleByType(int type)
     {
-        return System.Array.Find(modules, m => m.frontModuleType == type); // Analyse
+        return System.Array.Find(modules, m => m.lvl == type); // Analyse
+    }
+
+    public void BuyFrontModule()
+    {
+        int avaliliableMoney = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT , 0);
+
+        int currentFrontModuleLevel = PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1);
+
+        int nextFrontModulePrice = GetNextFrontModulePrice();
+
+        if(nextFrontModulePrice <= avaliliableMoney)
+        {
+            SetFrontModule(currentFrontModuleLevel + 1);
+
+            int moneyLeft = avaliliableMoney - nextFrontModulePrice;
+
+            PlayerPrefs.SetInt(GameStats.Instance.COIN_BANK_AMOUNT, moneyLeft);
+
+            OnFrontModuleUpdated?.Invoke();
+        }
+    }
+
+    // Ts is separated cuz also used in another place
+    public int GetNextFrontModulePrice()
+    {
+        Debug.Log(PlayerPrefs.HasKey(FRONT_MODULE_LVL_KEY));
+        int currentFrontModuleLevel = PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1);
+        Debug.Log(currentFrontModuleLevel);
+        int nextFrontModulePrice = GetModuleByType(currentFrontModuleLevel + 1).price;
+
+        return nextFrontModulePrice;
     }
 }
 
-public enum FrontModuleType
-{
-    LVL1, LVL2, LVL3
-}
 
 

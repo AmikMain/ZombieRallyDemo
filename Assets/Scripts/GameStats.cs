@@ -39,7 +39,7 @@ public class GameStats : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt(COIN_BANK_AMOUNT, 0);//DELETE
+        PlayerPrefs.SetInt(COIN_BANK_AMOUNT, 0); //DELETE
 
         Car.Instance.OnCarDied += CalculateLapEndMoney;
 
@@ -61,46 +61,46 @@ public class GameStats : MonoBehaviour
     }
 
     void Update()
-{
-    // --- TARMAC ---
-    Vector3 localTarmacPos =
-        tarmacRoad.transform.InverseTransformPoint(car.position);
+    {
+        // --- TARMAC ---
+        Vector3 localTarmacPos =
+            tarmacRoad.transform.InverseTransformPoint(car.position);
 
-    float tarmacT;
-    SplineUtility.GetNearestPoint(
-        tarmacRoad.Spline,
-        localTarmacPos,
-        out _,
-        out tarmacT
-    );
+        float tarmacT;
+        SplineUtility.GetNearestPoint(
+            tarmacRoad.Spline,
+            localTarmacPos,
+            out _,
+            out tarmacT
+        );
 
-    float tarmacProgress =
-        Mathf.Clamp01(Mathf.InverseLerp(startT, 1f, tarmacT));
+        float tarmacProgress =
+            Mathf.Clamp01(Mathf.InverseLerp(startT, 1f, tarmacT));
 
-    maxTarmac = Mathf.Max(maxTarmac, tarmacProgress);
+        maxTarmac = Mathf.Max(maxTarmac, tarmacProgress);
 
-    // --- GRAVEL ---
-    Vector3 localGravelPos =
-        gravelRoad.transform.InverseTransformPoint(car.position);
+        // --- GRAVEL ---
+        Vector3 localGravelPos =
+            gravelRoad.transform.InverseTransformPoint(car.position);
 
-    float gravelT;
-    SplineUtility.GetNearestPoint(
-        gravelRoad.Spline,
-        localGravelPos,
-        out _,
-        out gravelT
-    );
+        float gravelT;
+        SplineUtility.GetNearestPoint(
+            gravelRoad.Spline,
+            localGravelPos,
+            out _,
+            out gravelT
+        );
 
-    float gravelProgress = Mathf.Clamp01(gravelT);
-    maxGravel = Mathf.Max(maxGravel, gravelProgress);
+        float gravelProgress = Mathf.Clamp01(gravelT);
+        maxGravel = Mathf.Max(maxGravel, gravelProgress);
 
-    // --- TOTAL ---
-    float totalProgress =
-        maxTarmac * tarmacWeight +
-        maxGravel * gravelWeight;
+        // --- TOTAL ---
+        float totalProgress =
+            maxTarmac * tarmacWeight +
+            maxGravel * gravelWeight;
 
-    lapPercent = totalProgress * 100f;
-}
+        lapPercent = totalProgress * 100f;
+    }
 
     float GetSplineLengthFromT(Spline spline, float fromT, int steps = 100)
     {
