@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1da6383ced5fc44aa5f8d37abb636b, type: 3}
   m_Name: LVL2Data
   m_EditorClassIdentifier: 
-  frontModuleType: 1
+  lvl: 1
   fatalSpeed: 0
   constantDamage: 0
   prefab: {fileID: 197240266393201884, guid: c30d6f9f79629ed4b9fa3dc7351e8768, type: 3}
+  price: 200

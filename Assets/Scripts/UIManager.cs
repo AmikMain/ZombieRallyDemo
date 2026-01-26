@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image healthImage;
     [SerializeField] TMP_Text lapEndMoneyText;
     [SerializeField] TMP_Text moneyBankText;
+
+    [SerializeField] TMP_Text armorPriceText;
+    [SerializeField] TMP_Text frontModulePriceText;
     private GameStats gameStats;
     private GameManager gameManager;
     private Car car;
@@ -47,13 +50,20 @@ public class UIManager : MonoBehaviour
         gameManager.OnLapStart += HandleLapStart;
         gameManager.OnLapReload += HandleLapReload;
         car.OnCarDied += HandleCarDeath;
+        car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated += UpdateGarageUI;
+
+        UpdateGarageUI();
     }
 
     void OnDisable()
     {
         gameManager.OnLapStart -= HandleLapStart;
-        car.OnCarDied -= HandleCarDeath;
+        
         gameManager.OnLapReload -= HandleLapReload;
+
+        if(car == null) return;
+        car.OnCarDied -= HandleCarDeath;
+        car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated -= UpdateGarageUI;
     }
 
     void Update()
@@ -142,5 +152,13 @@ public class UIManager : MonoBehaviour
             yield return null;
             lapEndMoneyText.text = i.ToString();            
         }
+    }
+
+    private void UpdateGarageUI()
+    {
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
+
+        /// TODO armorPriceText =
+        frontModulePriceText.text = FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice().ToString();
     }
 }

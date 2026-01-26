@@ -7,19 +7,19 @@ using UnityEngine.UIElements;
 
 public class Car : MonoBehaviour
 {
+    public static Car Instance;
+    public event Action OnCarDied;
+
     [SerializeField] private Transform zombieTarget;
     [SerializeField] private float tarmacSurfaceDriftMp = 2;
     [SerializeField] private float gravelSurfaceDriftMp = 5;
     [SerializeField] private Vector3 lapSpawnPoint;
     [SerializeField] private Vector3 garagePoint;
 
-    public static Car Instance;
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
     private TerrainDetection terrainDetection;
     private Health health;
-    
-    public event Action OnCarDied;
     bool isDead = false;
 
     void Awake()

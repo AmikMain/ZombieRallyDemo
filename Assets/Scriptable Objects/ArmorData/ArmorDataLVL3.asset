@@ -15,3 +15,4 @@ MonoBehaviour:
   armorLevel: 2
   additionalHealth: 10
   prefab: {fileID: 4316619181877697944, guid: c7776035696a0a14ab22c119007526c9, type: 3}
+  price: 300
