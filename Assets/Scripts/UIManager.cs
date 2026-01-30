@@ -146,7 +146,7 @@ public class UIManager : MonoBehaviour
 
         moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
 
-        for(int i = 0; i < gameStats.GetLapEndMoney(); i++ )
+        for(int i = 0; i <= gameStats.GetLapEndMoney(); i++ )
         {
             yield return null;
             yield return null;
