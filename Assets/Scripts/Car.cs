@@ -102,6 +102,8 @@ public class Car : MonoBehaviour
 
     void TeleportToGarage()
     {
+        isDead = false;
+
         transform.position = garagePoint;
 
         transform.rotation = Quaternion.identity;

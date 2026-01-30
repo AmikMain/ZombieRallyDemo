@@ -732,6 +732,16 @@ public class PrometeoCarController : MonoBehaviour
       isTractionLocked = true;
       DriftCarPS();
 
+
+      // MAKING SHIT SLOW DOWN ON HANDBRAKE
+
+      rearLeftCollider.motorTorque = 0;
+      rearRightCollider.motorTorque = 0;
+
+      // прикладываем тормоз к задним колёсам
+      rearLeftCollider.brakeTorque = brakeForce * 2f;
+      rearRightCollider.brakeTorque = brakeForce * 2f;
+
     }
 
     // This function is used to emit both the particle systems of the tires' smoke and the trail renderers of the tire skids
@@ -804,6 +814,11 @@ public class PrometeoCarController : MonoBehaviour
         RRwheelFriction.extremumSlip =
             Mathf.Lerp(RRwheelFriction.extremumSlip, targetSlip, Time.deltaTime * 5f);
         rearRightCollider.sidewaysFriction = RRwheelFriction;
+
+
+        //not breaking anymore
+        rearLeftCollider.brakeTorque = 0;
+        rearRightCollider.brakeTorque = 0;
     }
 
 }

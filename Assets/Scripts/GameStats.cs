@@ -42,6 +42,7 @@ public class GameStats : MonoBehaviour
         PlayerPrefs.SetInt(COIN_BANK_AMOUNT, 0); //DELETE
 
         Car.Instance.OnCarDied += CalculateLapEndMoney;
+        GameManager.Instance.OnLapStart += ResetLapEndMoney;
 
         float tarmacLength =
             GetSplineLengthFromT(tarmacRoad.Spline, startT);
@@ -58,6 +59,7 @@ public class GameStats : MonoBehaviour
     void OnDisable()
     {
         Car.Instance.OnCarDied -= CalculateLapEndMoney;
+        GameManager.Instance.OnLapStart -= ResetLapEndMoney;
     }
 
     void Update()
@@ -152,6 +154,11 @@ public class GameStats : MonoBehaviour
         PlayerPrefs.SetInt(COIN_BANK_AMOUNT, currentAmount + m);
         
         Debug.Log("Adding money to bank called");    
+    }
+
+    private void ResetLapEndMoney()
+    {
+        lapEndMoney = 0;
     }
 
 }
