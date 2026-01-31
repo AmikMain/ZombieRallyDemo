@@ -6,10 +6,7 @@ public class Armor : MonoBehaviour
     public string ARMOR_LVL_KEY = "ARMOR_LVL";
     [SerializeField] private ArmorData[] modules;
 
-    void Start()
-    {
-        //SetArmor(0);
-    }
+    public event Action OnArmorLevelUpdated;
 
     private void SetArmor(int lvl)
     {
@@ -59,5 +56,35 @@ public class Armor : MonoBehaviour
     public ArmorData GetModuleByLevel(int lvl)
     {
         return System.Array.Find(modules, m => m.armorLevel == lvl); // Analyse
+    }
+
+    public void BuyArmor()
+    {
+        int avaliliableMoney = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT , 0);
+
+        int currentArmorLevel = PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1);
+
+        int nextArmorPrice = GetNextArmorLevelPrice();
+
+        if (nextArmorPrice <= avaliliableMoney)
+        {
+            SetArmor(currentArmorLevel + 1);
+
+            int moneyLeft = avaliliableMoney - nextArmorPrice;
+
+            PlayerPrefs.SetInt(GameStats.Instance.COIN_BANK_AMOUNT, moneyLeft);
+
+            OnArmorLevelUpdated?.Invoke();
+        }
+    }
+
+    public int GetNextArmorLevelPrice()
+    {
+        Debug.Log(PlayerPrefs.HasKey(ARMOR_LVL_KEY));
+        int currentFrontModuleLevel = PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1);
+        Debug.Log(currentFrontModuleLevel);
+        int nextFrontModulePrice = GetModuleByLevel(currentFrontModuleLevel + 1).price;
+
+        return nextFrontModulePrice;
     }
 }

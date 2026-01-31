@@ -51,6 +51,7 @@ public class UIManager : MonoBehaviour
         gameManager.OnLapReload += HandleLapReload;
         car.OnCarDied += HandleCarDeath;
         car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated += UpdateGarageUI;
+        car.GetComponentInChildren<Armor>().OnArmorLevelUpdated += UpdateGarageUI;
 
         UpdateGarageUI();
     }
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
         if(car == null) return;
         car.OnCarDied -= HandleCarDeath;
         car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated -= UpdateGarageUI;
+        car.GetComponentInChildren<Armor>().OnArmorLevelUpdated -= UpdateGarageUI;
     }
 
     void Update()
@@ -156,9 +158,9 @@ public class UIManager : MonoBehaviour
 
     private void UpdateGarageUI()
     {
-        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 676767).ToString();
 
-        /// TODO armorPriceText =
         frontModulePriceText.text = FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice().ToString();
+        armorPriceText.text = FindAnyObjectByType<Armor>().GetNextArmorLevelPrice().ToString();
     }
 }

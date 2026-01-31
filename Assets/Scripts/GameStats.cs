@@ -122,8 +122,7 @@ public class GameStats : MonoBehaviour
 
     private void CalculateLapEndMoney()
     {
-        Debug.Log($"{zombiesKilled}, { (float)zombiesKilled * (float)lapPercent / 10f }");
-        lapEndMoney = Mathf.RoundToInt((float)zombiesKilled + (float)zombiesKilled * (float)lapPercent / 10f);
+        lapEndMoney = Mathf.RoundToInt((float)lapPercent + (float)zombiesKilled);
 
         AddMoneyToBank(lapEndMoney);
     }
