@@ -16,11 +16,6 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
         PlayerPrefs.DeleteAll();   
     }
 
-    void Start()
-    {
-        
-    }
-
     public void DealDamage(Collider other, int amount)
     {
         other.gameObject.GetComponent<Health>().TakeDamage(amount, DeathType.Kill);
