@@ -20,6 +20,8 @@ public class Zombie : MonoBehaviour
     Animator animator;
     Collider myCollider;
 
+    ParticleSystem bloodParticleSystem;
+
     void Awake()
     {
         healthComponent = GetComponent<Health>();
@@ -46,6 +48,7 @@ public class Zombie : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider>();
+        bloodParticleSystem = GetComponentInChildren<ParticleSystem>();
     }
     
     void HandleDeath(DeathType type)
@@ -70,6 +73,8 @@ public class Zombie : MonoBehaviour
 
             Car.Instance.RemoveFromVisibleZombies(this);
 
+            bloodParticleSystem.Play();
+
             OnDieByKilling?.Invoke();
 
             StartCoroutine(BeDestroyed());
@@ -78,6 +83,7 @@ public class Zombie : MonoBehaviour
 
     public void SetTarget(Vector3 target)
     {
+        return; //UBRAT
         if (isDead || navMeshAgent.enabled == false) return;
         navMeshAgent.SetDestination(target);
     }
