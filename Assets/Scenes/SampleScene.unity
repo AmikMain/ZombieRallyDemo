@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 50525163}
   m_Layer: 0
   m_Name: Terrain_(0.00, 0.00, -2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1126,7 +1126,7 @@ GameObject:
   - component: {fileID: 143330737}
   m_Layer: 0
   m_Name: Terrain_(-2000.00, 0.00, 2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -3409,7 +3409,7 @@ GameObject:
   - component: {fileID: 344284025}
   m_Layer: 0
   m_Name: Terrain_(-2000.00, 0.00, -2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4401,7 +4401,7 @@ GameObject:
   - component: {fileID: 512728693}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -6645,7 +6645,7 @@ GameObject:
   - component: {fileID: 1105514465}
   m_Layer: 0
   m_Name: Terrain_(-2000.00, 0.00, 1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -6738,7 +6738,7 @@ GameObject:
   - component: {fileID: 1108755340}
   m_Layer: 0
   m_Name: Terrain_(-2000.00, 0.00, 0.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -6831,7 +6831,7 @@ GameObject:
   - component: {fileID: 1152634941}
   m_Layer: 0
   m_Name: Terrain_(-2000.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -6911,6 +6911,11 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!82 &1190969115 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6985304652812780455, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+  m_PrefabInstance: {fileID: 4183227210066548012}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1201283022
 GameObject:
   m_ObjectHideFlags: 0
@@ -6923,7 +6928,7 @@ GameObject:
   - component: {fileID: 1201283024}
   m_Layer: 0
   m_Name: Terain
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -7495,7 +7500,7 @@ GameObject:
   - component: {fileID: 1399241806}
   m_Layer: 0
   m_Name: Terrain_(0.00, 0.00, 1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8140,7 +8145,7 @@ GameObject:
   - component: {fileID: 1500170684}
   m_Layer: 0
   m_Name: Terrain_(0.00, 0.00, 2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8289,7 +8294,7 @@ GameObject:
   - component: {fileID: 1526637784}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, 1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8382,7 +8387,7 @@ GameObject:
   - component: {fileID: 1544214879}
   m_Layer: 0
   m_Name: Terrain_(0.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8513,7 +8518,7 @@ GameObject:
   - component: {fileID: 1577219297}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -9163,7 +9168,7 @@ GameObject:
   - component: {fileID: 1728741125}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, 2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -9391,6 +9396,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db03e0cf763bb6f48b117711b20843ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1825331451 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6340507740740704397, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+  m_PrefabInstance: {fileID: 4183227210066548012}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1851631398 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 818782782174531957, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
@@ -10581,7 +10591,7 @@ GameObject:
   - component: {fileID: 1945695249}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, -2000.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -14793,7 +14803,7 @@ GameObject:
   - component: {fileID: 2081517326}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, 0.00)
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -14953,10 +14963,42 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.5139794
       objectReference: {fileID: 0}
+    - target: {fileID: 620595961484534131, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 620595961484534131, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 706b3b6a1f19a4943b227fdd757c9659, type: 3}
+    - target: {fileID: 620595961484534131, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: gravelAudio
+      value: 
+      objectReference: {fileID: 4183227210066548014}
+    - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: tarmacAudio
+      value: 
+      objectReference: {fileID: 1825331451}
     - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
       propertyPath: zombieTarget
       value: 
       objectReference: {fileID: 1468614629}
+    - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: collisionAudio
+      value: 
+      objectReference: {fileID: 1190969115}
+    - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: treeCoollisionVelocity1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214290083820538821, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: treeCoollisionVelocity2
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2338496157659836284, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
       propertyPath: moveWithTransform
       value: 0
@@ -15070,6 +15112,14 @@ PrefabInstance:
       value: 0.35686275
       objectReference: {fileID: 0}
     - target: {fileID: 6275519650052163285, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: useSounds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275519650052163285, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: carEngineSound
+      value: 
+      objectReference: {fileID: 4183227210066548013}
+    - target: {fileID: 6275519650052163285, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
       propertyPath: handbrakeDriftMultiplier
       value: 6
       objectReference: {fileID: 0}
@@ -15093,15 +15143,53 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.6132076
       objectReference: {fileID: 0}
+    - target: {fileID: 6340507740740704397, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: MinDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340507740740704397, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340507740740704397, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6721040737355276569, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
       propertyPath: m_Name
       value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503010997023833383, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503010997023833383, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c1c130f6e1be75418d305f8e478e0f0, type: 3}
+    - target: {fileID: 8503010997023833383, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: MinDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503010997023833383, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+--- !u!82 &4183227210066548013 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8503010997023833383, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+  m_PrefabInstance: {fileID: 4183227210066548012}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4183227210066548014 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 620595961484534131, guid: 28e0c148d7e3e0e409794725e20c20b6, type: 3}
+  m_PrefabInstance: {fileID: 4183227210066548012}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
