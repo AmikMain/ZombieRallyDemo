@@ -66,6 +66,8 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
 
         int nextFrontModulePrice = GetNextFrontModulePrice();
 
+        if(nextFrontModulePrice == -1) return;
+
         if(nextFrontModulePrice <= avaliliableMoney)
         {
             SetFrontModule(currentFrontModuleLevel + 1);
@@ -81,12 +83,16 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
     // Ts is separated cuz also used in another place
     public int GetNextFrontModulePrice()
     {
-        Debug.Log(PlayerPrefs.HasKey(FRONT_MODULE_LVL_KEY));
-        int currentFrontModuleLevel = PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1);
-        Debug.Log(currentFrontModuleLevel);
-        int nextFrontModulePrice = GetModuleByType(currentFrontModuleLevel + 1).price;
+        int currentLevel = PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1);
 
-        return nextFrontModulePrice;
+        var nextModule = GetModuleByType(currentLevel + 1);
+
+        if (nextModule == null)
+        {
+            return -1; // следующего уровня нет
+        }
+
+        return nextModule.price;
     }
 }
 

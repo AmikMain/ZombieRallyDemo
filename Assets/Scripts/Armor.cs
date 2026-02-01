@@ -29,17 +29,21 @@ public class Armor : MonoBehaviour
         }
 
         health.AddToMaxHealth(totalHealthAdditon); 
+
+        Debug.Log("Health changed");
     }
 
     private void SpawnArmorPrefabs(int lvl)
     {
+        Debug.Log("Spawning Armor prefabs");
         //clean everything first
         Transform[] oldArmorTransforms = GetComponentsInChildren<Transform>();
 
         foreach (Transform t in oldArmorTransforms)
         {
             if (t == transform) continue;
-            Destroy(transform.gameObject);
+            Destroy(t.gameObject);
+            Debug.Log("Old destroyed");
         }
 
         //spawn new ones
@@ -49,7 +53,10 @@ public class Armor : MonoBehaviour
             GameObject prefab = GetModuleByLevel(lvl - i).prefab;
             
             Instantiate(prefab, this.gameObject.transform);
+            Debug.Log("New spawned");
         }
+
+        PlayerPrefs.SetInt(ARMOR_LVL_KEY, lvl);
 
     }
 
@@ -60,31 +67,41 @@ public class Armor : MonoBehaviour
 
     public void BuyArmor()
     {
+        Debug.Log("Trying to buy armor");
+
         int avaliliableMoney = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT , 0);
 
         int currentArmorLevel = PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1);
 
         int nextArmorPrice = GetNextArmorLevelPrice();
 
+        if(nextArmorPrice == -1) return;
+
         if (nextArmorPrice <= avaliliableMoney)
         {
+            Debug.Log("Enough money");
+
             SetArmor(currentArmorLevel + 1);
 
             int moneyLeft = avaliliableMoney - nextArmorPrice;
 
             PlayerPrefs.SetInt(GameStats.Instance.COIN_BANK_AMOUNT, moneyLeft);
 
-            OnArmorLevelUpdated?.Invoke();
+            OnArmorLevelUpdated?.Invoke();    
         }
     }
 
     public int GetNextArmorLevelPrice()
     {
-        Debug.Log(PlayerPrefs.HasKey(ARMOR_LVL_KEY));
-        int currentFrontModuleLevel = PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1);
-        Debug.Log(currentFrontModuleLevel);
-        int nextFrontModulePrice = GetModuleByLevel(currentFrontModuleLevel + 1).price;
+        int currentLevel = PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1);
 
-        return nextFrontModulePrice;
+        var nextData = GetModuleByLevel(currentLevel + 1);
+
+        if (nextData == null)
+        {
+            return -1; // следующего уровня нет
+        }
+
+        return nextData.price;
     }
 }
