@@ -13,15 +13,12 @@ public class ZombieSpawnTrigger : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.OnLapStart += SetZombieSpawnSphereRadius;
+        GameManager.Instance.OnLapReload += HandleLapReload;
+
         sphereCollider = GetComponent<SphereCollider>();
 
         sphereCollider.radius = initialRadius;
-    }
-
-    void OnEnable()
-    {
-        GameManager.Instance.OnLapStart += SetZombieSpawnSphereRadius;
-        GameManager.Instance.OnLapReload += HandleLapReload;
     }
 
     void OnDisable()

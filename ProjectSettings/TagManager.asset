@@ -9,6 +9,7 @@ TagManager:
   - Car
   - Tarmac
   - Gravel
+  - Tree
   layers:
   - Default
   - TransparentFX

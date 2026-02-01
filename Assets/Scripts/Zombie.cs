@@ -22,6 +22,8 @@ public class Zombie : MonoBehaviour
 
     ParticleSystem bloodParticleSystem;
 
+    [SerializeField] AudioSource deathAudioSource;
+
     void Awake()
     {
         healthComponent = GetComponent<Health>();
@@ -74,6 +76,8 @@ public class Zombie : MonoBehaviour
             Car.Instance.RemoveFromVisibleZombies(this);
 
             bloodParticleSystem.Play();
+
+            deathAudioSource.Play();
 
             OnDieByKilling?.Invoke();
 

@@ -19,12 +19,18 @@ public class Car : MonoBehaviour
     [SerializeField] private ParticleSystem RLTarmacParticles;
     [SerializeField] private ParticleSystem RRGravelParticles;
     [SerializeField] private ParticleSystem RLGravelParticles;
+    [SerializeField] private AudioSource tarmacAudio;
+    [SerializeField] private AudioSource gravelAudio;
+    [SerializeField] private AudioSource collisionAudio;
+    [SerializeField] private float treeCoollisionVelocity1 = 5;
+    [SerializeField] private float treeCoollisionVelocity2 = 15;
 
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
     private TerrainDetection terrainDetection;
     private Health health;
     bool isDead = false;
+    
 
     void Awake()
     {
@@ -36,17 +42,6 @@ public class Car : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-    void OnEnable()
-    {
-        terrainDetection = GetComponentInChildren<TerrainDetection>();
-        health = GetComponent<Health>();
-
-        GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
-        GameManager.Instance.OnLapReload += TeleportToGarage;
-        terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
-        health.OnDie += HandleDeath;
     }
 
     void OnDisable()
@@ -61,6 +56,28 @@ public class Car : MonoBehaviour
     {
         zombieSpawnTrigger = GetComponentInChildren<ZombieSpawnTrigger>();
         prometeoCarController = GetComponent<PrometeoCarController>();
+
+        terrainDetection = GetComponentInChildren<TerrainDetection>();
+        health = GetComponent<Health>();
+
+        GameManager.Instance.OnLapStart += TeleportToLapStartDelayed;
+        GameManager.Instance.OnLapReload += TeleportToGarage;
+        terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
+        health.OnDie += HandleDeath;
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+
+        if( collision.gameObject.CompareTag("Tree") && GetComponent<Rigidbody>().linearVelocity.magnitude >= treeCoollisionVelocity1)
+        {
+            collisionAudio.Play();
+
+            if(GetComponent<Rigidbody>().linearVelocity.magnitude >= treeCoollisionVelocity2)
+            {
+                health.TakeDamage(30, DeathType.Kill); 
+            }
+        }
     }
 
     private void TeleportToLapStartDelayed()
@@ -102,6 +119,8 @@ public class Car : MonoBehaviour
             prometeoCarController.RLWParticleSystem.Stop();
             prometeoCarController.RRWParticleSystem = RRTarmacParticles;
             prometeoCarController.RLWParticleSystem = RLTarmacParticles;
+
+            prometeoCarController.tireScreechSound = tarmacAudio;
         }
         else if (type == TerrainType.Gravel)
         {
@@ -111,6 +130,8 @@ public class Car : MonoBehaviour
             prometeoCarController.RLWParticleSystem.Stop();
             prometeoCarController.RRWParticleSystem = RRGravelParticles;
             prometeoCarController.RLWParticleSystem = RLGravelParticles;
+
+            prometeoCarController.tireScreechSound = gravelAudio;
         }
     }
 
