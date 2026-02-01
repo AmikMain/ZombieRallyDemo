@@ -275,6 +275,9 @@ public class PrometeoCarController : MonoBehaviour
     void Update()
     {
 
+      //Particle drift state
+      CheckDriftState();
+
       //CAR DATA
 
       // We determine the speed of the car.
@@ -534,13 +537,6 @@ public class PrometeoCarController : MonoBehaviour
     public void GoForward(){
       //If the forces aplied to the rigidbody in the 'x' asis are greater than
       //3f, it means that the car is losing traction, then the car will start emitting particle systems.
-      if(Mathf.Abs(localVelocityX) > 2.5f){
-        isDrifting = true;
-        DriftCarPS();
-      }else{
-        isDrifting = false;
-        DriftCarPS();
-      }
       // The following part sets the throttle power to 1 smoothly.
       throttleAxis = throttleAxis + (Time.deltaTime * 3f);
       if(throttleAxis > 1f){
@@ -578,13 +574,6 @@ public class PrometeoCarController : MonoBehaviour
     public void GoReverse(){
       //If the forces aplied to the rigidbody in the 'x' asis are greater than
       //3f, it means that the car is losing traction, then the car will start emitting particle systems.
-      if(Mathf.Abs(localVelocityX) > 2.5f){
-        isDrifting = true;
-        DriftCarPS();
-      }else{
-        isDrifting = false;
-        DriftCarPS();
-      }
       // The following part sets the throttle power to -1 smoothly.
       throttleAxis = throttleAxis - (Time.deltaTime * 3f);
       if(throttleAxis < -1f){
@@ -630,13 +619,6 @@ public class PrometeoCarController : MonoBehaviour
     // 1 is the slowest and 10 is the fastest deceleration. This method is called by the function InvokeRepeating,
     // usually every 0.1f when the user is not pressing W (throttle), S (reverse) or Space bar (handbrake).
     public void DecelerateCar(){
-      if(Mathf.Abs(localVelocityX) > 2.5f){
-        isDrifting = true;
-        DriftCarPS();
-      }else{
-        isDrifting = false;
-        DriftCarPS();
-      }
       // The following part resets the throttle power to 0 smoothly.
       if(throttleAxis != 0f){
         if(throttleAxis > 0f){
@@ -730,8 +712,6 @@ public class PrometeoCarController : MonoBehaviour
       // Whenever the player uses the handbrake, it means that the wheels are locked, so we set 'isTractionLocked = true'
       // and, as a consequense, the car starts to emit trails to simulate the wheel skids.
       isTractionLocked = true;
-      DriftCarPS();
-
 
       // MAKING SHIT SLOW DOWN ON HANDBRAKE
 
@@ -819,6 +799,43 @@ public class PrometeoCarController : MonoBehaviour
         //not breaking anymore
         rearLeftCollider.brakeTorque = 0;
         rearRightCollider.brakeTorque = 0;
+    }
+
+    void CheckDriftState()
+    {
+        float sideways = Mathf.Abs(localVelocityX);
+        float speed = Mathf.Abs(carRigidbody.linearVelocity.magnitude);
+
+        bool shouldDrift =
+            speed > 5f && sideways > 1.5f;
+
+        if (shouldDrift != isDrifting)
+        {
+            isDrifting = shouldDrift;
+            UpdateDriftVFX();
+        }
+    }
+
+    void UpdateDriftVFX()
+    {
+        if (!useEffects) return;
+
+        if (isDrifting)
+        {
+            RLWParticleSystem.Play();
+            RRWParticleSystem.Play();
+        }
+        else
+        {
+            RLWParticleSystem.Stop();
+            RRWParticleSystem.Stop();
+        }
+
+        //bool skid = (isTractionLocked || Mathf.Abs(localVelocityX) > 1f)
+        //            && Mathf.Abs(carSpeed) > 8f;
+
+        //RLWTireSkid.emitting = skid;
+        //RRWTireSkid.emitting = skid;
     }
 
 }

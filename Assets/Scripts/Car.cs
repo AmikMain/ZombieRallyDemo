@@ -15,6 +15,10 @@ public class Car : MonoBehaviour
     [SerializeField] private float gravelSurfaceDriftMp = 5;
     [SerializeField] private Vector3 lapSpawnPoint;
     [SerializeField] private Vector3 garagePoint;
+    [SerializeField] private ParticleSystem RRTarmacParticles;
+    [SerializeField] private ParticleSystem RLTarmacParticles;
+    [SerializeField] private ParticleSystem RRGravelParticles;
+    [SerializeField] private ParticleSystem RLGravelParticles;
 
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
@@ -93,10 +97,20 @@ public class Car : MonoBehaviour
         if (type == TerrainType.Tarmac)
         {
             prometeoCarController.surfaceDriftMultiplier = tarmacSurfaceDriftMp;
+
+            prometeoCarController.RRWParticleSystem.Stop();
+            prometeoCarController.RLWParticleSystem.Stop();
+            prometeoCarController.RRWParticleSystem = RRTarmacParticles;
+            prometeoCarController.RLWParticleSystem = RLTarmacParticles;
         }
         else if (type == TerrainType.Gravel)
         {
             prometeoCarController.surfaceDriftMultiplier = gravelSurfaceDriftMp;
+
+            prometeoCarController.RRWParticleSystem.Stop();
+            prometeoCarController.RLWParticleSystem.Stop();
+            prometeoCarController.RRWParticleSystem = RRGravelParticles;
+            prometeoCarController.RLWParticleSystem = RLGravelParticles;
         }
     }
 
