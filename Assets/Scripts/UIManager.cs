@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] TMP_Text armorPriceText;
     [SerializeField] TMP_Text frontModulePriceText;
+    [SerializeField] TMP_Text enginePriceText;
     private GameStats gameStats;
     private GameManager gameManager;
     private Car car;
@@ -52,6 +53,7 @@ public class UIManager : MonoBehaviour
         car.OnCarDied += HandleCarDeath;
         car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated += UpdateGarageUI;
         car.GetComponentInChildren<Armor>().OnArmorLevelUpdated += UpdateGarageUI;
+        car.GetComponentInChildren<CarEngine>().OnEngineUpdated += UpdateGarageUI;
 
         UpdateGarageUI();
     }
@@ -66,6 +68,7 @@ public class UIManager : MonoBehaviour
         car.OnCarDied -= HandleCarDeath;
         car.GetComponentInChildren<FrontModule>().OnFrontModuleUpdated -= UpdateGarageUI;
         car.GetComponentInChildren<Armor>().OnArmorLevelUpdated -= UpdateGarageUI;
+        car.GetComponentInChildren<CarEngine>().OnEngineUpdated -= UpdateGarageUI;
     }
 
     void Update()
@@ -146,7 +149,7 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.canReloadLap = true;
 
-        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 67).ToString();
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 6767).ToString();
 
         for(int i = 0; i <= gameStats.GetLapEndMoney(); i++ )
         {
@@ -160,7 +163,38 @@ public class UIManager : MonoBehaviour
     {
         moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 676767).ToString();
 
-        frontModulePriceText.text = FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice().ToString();
-        armorPriceText.text = FindAnyObjectByType<Armor>().GetNextArmorLevelPrice().ToString();
+        string frontModulePrice;
+        if (FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice() == -1)
+        {
+            frontModulePrice = "MAX";
+        }
+        else
+        {
+            frontModulePrice = FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice().ToString();
+        }
+        frontModulePriceText.text = frontModulePrice;
+
+
+        string armorPrice;
+        if (FindAnyObjectByType<Armor>().GetNextArmorLevelPrice() == -1)
+        {
+            armorPrice = "MAX";
+        }
+        else
+        {
+            armorPrice = FindAnyObjectByType<Armor>().GetNextArmorLevelPrice().ToString();
+        }
+        armorPriceText.text = armorPrice;
+
+        string enginePrice;
+        if (FindAnyObjectByType<CarEngine>().GetNextEngineLevelPrice() == -1)
+        {
+            enginePrice = "MAX";
+        }
+        else
+        {
+            enginePrice = FindAnyObjectByType<CarEngine>().GetNextEngineLevelPrice().ToString();
+        }
+        enginePriceText.text = enginePrice;
     }
 }
