@@ -23,6 +23,7 @@ public class Zombie : MonoBehaviour
     ParticleSystem bloodParticleSystem;
 
     [SerializeField] AudioSource deathAudioSource;
+    public AudioSource moanAudioSource;
 
     void Awake()
     {
@@ -87,7 +88,6 @@ public class Zombie : MonoBehaviour
 
     public void SetTarget(Vector3 target)
     {
-        return; //UBRAT
         if (isDead || navMeshAgent.enabled == false) return;
         navMeshAgent.SetDestination(target);
     }

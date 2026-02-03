@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -7,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    [SerializeField] AudioSource buttonClickSound;
 
     [SerializeField] float fadeAnimationDuration = .3f;
 
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_Text armorPriceText;
     [SerializeField] TMP_Text frontModulePriceText;
     [SerializeField] TMP_Text enginePriceText;
+    
     private GameStats gameStats;
     private GameManager gameManager;
     private Car car;
@@ -56,6 +58,17 @@ public class UIManager : MonoBehaviour
         car.GetComponentInChildren<CarEngine>().OnEngineUpdated += UpdateGarageUI;
 
         UpdateGarageUI();
+        SubscribeButtonsToClickSound();
+    }
+
+    private void SubscribeButtonsToClickSound()
+    {
+        Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (Button button in buttons)
+        {
+            button.onClick.AddListener(PlayClickSound);
+        } 
     }
 
     void OnDisable()
@@ -197,4 +210,11 @@ public class UIManager : MonoBehaviour
         }
         enginePriceText.text = enginePrice;
     }
+
+    public void PlayClickSound()
+    {
+        buttonClickSound.Play();
+    }
+
+    
 }
