@@ -43,6 +43,7 @@ public class GameStats : MonoBehaviour
 
         Car.Instance.OnCarDied += CalculateLapEndMoney;
         GameManager.Instance.OnLapStart += ResetLapEndMoney;
+        GameArea.OnPlayerLeftGameArea += ReturnCarToRoad;
 
         float tarmacLength =
             GetSplineLengthFromT(tarmacRoad.Spline, startT);
@@ -160,6 +161,39 @@ public class GameStats : MonoBehaviour
         lapEndMoney = 0;
         zombiesKilled = 0;
         lapPercent = 0;
+    }
+
+    public void ReturnCarToRoad()
+    {
+        Debug.Log("event catched");
+        if (car == null || tarmacRoad == null || gravelRoad == null) return;
+
+        // --- Асфальт ---
+        Vector3 localTarmacPos = tarmacRoad.transform.InverseTransformPoint(car.position);
+        float tTarmac;
+        SplineUtility.GetNearestPoint(tarmacRoad.Spline, localTarmacPos, out _, out tTarmac);
+        Vector3 nearestTarmacPos = tarmacRoad.Spline.EvaluatePosition(tTarmac);
+        float tarmacDistance = Vector3.Distance(car.position, tarmacRoad.transform.TransformPoint(nearestTarmacPos));
+
+        // --- Гравий ---
+        Vector3 localGravelPos = gravelRoad.transform.InverseTransformPoint(car.position);
+        float tGravel;
+        SplineUtility.GetNearestPoint(gravelRoad.Spline, localGravelPos, out _, out tGravel);
+        Vector3 nearestGravelPos = gravelRoad.Spline.EvaluatePosition(tGravel);
+        float gravelDistance = Vector3.Distance(car.position, gravelRoad.transform.TransformPoint(nearestGravelPos));
+
+        // --- Выбираем ближайшую дорогу ---
+        SplineContainer nearestRoad = tarmacDistance <= gravelDistance ? tarmacRoad : gravelRoad;
+        float nearestT = tarmacDistance <= gravelDistance ? tTarmac : tGravel;
+        Vector3 nearestPos = nearestRoad.Spline.EvaluatePosition(nearestT);
+
+        // --- Телепортируем машину ---
+        car.position = nearestRoad.transform.TransformPoint(nearestPos);
+
+        // --- Выровнять машину по сплайну ---
+        Vector3 tangent = nearestRoad.Spline.EvaluateTangent(nearestT);
+        if (tangent.sqrMagnitude > 0.0001f)
+            car.rotation = Quaternion.LookRotation(tangent.normalized, Vector3.up);
     }
 
 }

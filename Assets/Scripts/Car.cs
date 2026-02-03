@@ -66,19 +66,7 @@ public class Car : MonoBehaviour
         health.OnDie += HandleDeath;
     }
 
-    public void OnCollisionEnter(Collision collision)
-    {
-
-        if( collision.gameObject.CompareTag("Tree") && GetComponent<Rigidbody>().linearVelocity.magnitude >= treeCoollisionVelocity1)
-        {
-            collisionAudio.Play();
-
-            if(GetComponent<Rigidbody>().linearVelocity.magnitude >= treeCoollisionVelocity2)
-            {
-                health.TakeDamage(30, DeathType.Kill); 
-            }
-        }
-    }
+    
 
     private void TeleportToLapStartDelayed()
     {

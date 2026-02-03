@@ -6,6 +6,7 @@ using UnityEngine;
 public class ZombieSpawnTrigger : MonoBehaviour
 {
     [SerializeField] float zombieNoticingDistance = 40;
+    [SerializeField] float zombieMoanDistance = 5;
     [SerializeField] float zombieSpawnRadius = 150;
     [SerializeField] float initialRadius = .5f;
     List<GameObject> visibleZombies = new List<GameObject>();
@@ -31,9 +32,27 @@ public class ZombieSpawnTrigger : MonoBehaviour
     {
         foreach (GameObject z in visibleZombies)
         {
-            if (Vector3.Distance(Car.Instance.transform.position, z.transform.position) <= zombieNoticingDistance)
+            float distance = Vector3.Distance(Car.Instance.transform.position, z.transform.position);
+
+            if (distance <= zombieNoticingDistance)
             {
                 z.GetComponent<Zombie>().SetTarget(Car.Instance.GetZombieTarget());
+            }
+
+            if(distance <= zombieMoanDistance)
+            {
+                if (Random.Range(0f, 1f) > 0.7)
+                {
+                    if (z.GetComponent<Zombie>().moanAudioSource != null)
+                    {
+                        z.GetComponent<Zombie>().moanAudioSource.Play(); 
+                    }
+                     
+                }
+                else
+                {
+                    z.GetComponent<Zombie>().moanAudioSource = null;
+                }
             }
         }
     }
