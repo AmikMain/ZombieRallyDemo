@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EngineData3
   m_EditorClassIdentifier: 
   level: 2
-  speedAddition: 30
+  speedAddition: 40
   accelerationAddtion: 3
   price: 70

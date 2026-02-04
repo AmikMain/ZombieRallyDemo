@@ -196,4 +196,10 @@ public class GameStats : MonoBehaviour
             car.rotation = Quaternion.LookRotation(tangent.normalized, Vector3.up);
     }
 
+    void OnApplicationQuit()
+    {
+        Debug.Log("Сохраняем PlayerPrefs перед выходом");
+        PlayerPrefs.Save();
+    }
+
 }

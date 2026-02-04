@@ -11,11 +11,6 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
     private bool constantDamage = false; //chainsaw
     public event Action OnFrontModuleUpdated;
 
-    void Awake()
-    {
-        PlayerPrefs.DeleteAll();   
-    }
-
     public void DealDamage(Collider other, int amount)
     {
         other.gameObject.GetComponent<Health>().TakeDamage(amount, DeathType.Kill);
