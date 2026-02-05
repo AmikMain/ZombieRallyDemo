@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -8,12 +11,16 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] AudioSource buttonClickSound;
+    [SerializeField] AudioMixerGroup audioMixerGroup;
+    [SerializeField] AudioMixer audioMixer;
 
     [SerializeField] float fadeAnimationDuration = .3f;
 
     [SerializeField] CanvasGroup lapCanvasGroup;
     [SerializeField] CanvasGroup garageCanvasGroup;
     [SerializeField] CanvasGroup deathCanvasGroup;
+    [SerializeField] CanvasGroup mainMenuCanvasGroup;
+    [SerializeField] GameObject settingsMenu;
 
     [SerializeField] TMP_Text lapPercentUIText;
     [SerializeField] TMP_Text zombiesKilledUIText;
@@ -24,6 +31,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_Text armorPriceText;
     [SerializeField] TMP_Text frontModulePriceText;
     [SerializeField] TMP_Text enginePriceText;
+    [SerializeField] CinemachineCamera mainMenuCamera;
+    [SerializeField] Slider masterVolumeSlider;
+    [SerializeField] float maxMasterDb = 10;
+    [SerializeField] float minMasterDb = -10;
+    
     
     private GameStats gameStats;
     private GameManager gameManager;
@@ -57,8 +69,26 @@ public class UIManager : MonoBehaviour
         car.GetComponentInChildren<Armor>().OnArmorLevelUpdated += UpdateGarageUI;
         car.GetComponentInChildren<CarEngine>().OnEngineUpdated += UpdateGarageUI;
 
+        masterVolumeSlider.onValueChanged.AddListener(HandleMasterVolumeSliderValueChange);
+
         UpdateGarageUI();
         SubscribeButtonsToClickSound();
+        ApplyAudioMixer();
+    }
+
+    private void HandleMasterVolumeSliderValueChange(float arg0)
+    {
+        audioMixer.SetFloat("MasterVolume", Mathf.Lerp(minMasterDb, maxMasterDb, arg0));
+    }
+
+    private void ApplyAudioMixer()
+    {
+        AudioSource[] audioSources = FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
+        }
     }
 
     private void SubscribeButtonsToClickSound()
@@ -110,6 +140,22 @@ public class UIManager : MonoBehaviour
     {
         StartFadeCoroutine(garageCanvasGroup, 1, 0, fadeAnimationDuration, 0f);
         StartFadeCoroutine(lapCanvasGroup, 0, 1, fadeAnimationDuration, 2f);      
+    }
+
+    public void EnterGarageFromMainMenu()
+    {
+        mainMenuCamera.enabled = false;
+
+        StartFadeCoroutine(mainMenuCanvasGroup, 1, 0, fadeAnimationDuration, 0f);
+        StartFadeCoroutine(garageCanvasGroup, 0, 1, fadeAnimationDuration, fadeAnimationDuration);    
+    }
+
+    public void EnterMainMenuFromGarage()
+    {
+        mainMenuCamera.enabled = true;
+
+        StartFadeCoroutine(garageCanvasGroup, 1, 0, fadeAnimationDuration, 0f);
+        StartFadeCoroutine(mainMenuCanvasGroup, 0, 1, fadeAnimationDuration, fadeAnimationDuration);
     }
 
     private void HandleCarDeath()
@@ -174,7 +220,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateGarageUI()
     {
-        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 676767).ToString();
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 0).ToString();
 
         string frontModulePrice;
         if (FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice() == -1)
@@ -214,6 +260,32 @@ public class UIManager : MonoBehaviour
     public void PlayClickSound()
     {
         buttonClickSound.Play();
+    }
+
+    public void LeaveGame()
+    {
+        Debug.Log("Выход из игры"); // Для проверки в редакторе
+        Application.Quit();
+    }
+
+    public void ResetProgress()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        Application.Quit();
+    }
+
+    public void ToggleSettings()
+    {
+        if(settingsMenu.activeInHierarchy)
+        {
+            settingsMenu.SetActive(false);
+        }
+        else
+        {
+            settingsMenu.SetActive(true);
+        }
     }
 
     

@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 
 public class Zombie : MonoBehaviour
 {
@@ -22,7 +23,9 @@ public class Zombie : MonoBehaviour
 
     ParticleSystem bloodParticleSystem;
 
+    [SerializeField] AudioMixerGroup audioMixerGroup;
     [SerializeField] AudioSource deathAudioSource;
+    
     public AudioSource moanAudioSource;
 
     void Awake()
@@ -52,6 +55,9 @@ public class Zombie : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider>();
         bloodParticleSystem = GetComponentInChildren<ParticleSystem>();
+
+        deathAudioSource.outputAudioMixerGroup = audioMixerGroup;
+        moanAudioSource.outputAudioMixerGroup = audioMixerGroup;
     }
     
     void HandleDeath(DeathType type)

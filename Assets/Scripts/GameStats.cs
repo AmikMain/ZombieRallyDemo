@@ -39,8 +39,6 @@ public class GameStats : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt(COIN_BANK_AMOUNT, 0); //DELETE
-
         Car.Instance.OnCarDied += CalculateLapEndMoney;
         GameManager.Instance.OnLapStart += ResetLapEndMoney;
         GameArea.OnPlayerLeftGameArea += ReturnCarToRoad;
@@ -123,7 +121,7 @@ public class GameStats : MonoBehaviour
 
     private void CalculateLapEndMoney()
     {
-        lapEndMoney = Mathf.RoundToInt((float)lapPercent * 1.5f + (float)zombiesKilled * 1.5f) * 100;
+        lapEndMoney = Mathf.RoundToInt((float)lapPercent * 2f + (float)zombiesKilled * 2f);
 
         AddMoneyToBank(lapEndMoney);
     }
@@ -161,6 +159,9 @@ public class GameStats : MonoBehaviour
         lapEndMoney = 0;
         zombiesKilled = 0;
         lapPercent = 0;
+
+        maxTarmac = 0f;
+        maxGravel = 0f;
     }
 
     public void ReturnCarToRoad()
@@ -194,6 +195,12 @@ public class GameStats : MonoBehaviour
         Vector3 tangent = nearestRoad.Spline.EvaluateTangent(nearestT);
         if (tangent.sqrMagnitude > 0.0001f)
             car.rotation = Quaternion.LookRotation(tangent.normalized, Vector3.up);
+    }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("Сохраняем PlayerPrefs перед выходом");
+        PlayerPrefs.Save();
     }
 
 }

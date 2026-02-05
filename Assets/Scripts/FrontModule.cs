@@ -11,9 +11,12 @@ public class FrontModule : MonoBehaviour, IDamageTrigger
     private bool constantDamage = false; //chainsaw
     public event Action OnFrontModuleUpdated;
 
-    void Awake()
+    void Start()
     {
-        PlayerPrefs.DeleteAll();   
+        if (PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1) != -1)
+        {
+            SetFrontModule(PlayerPrefs.GetInt(FRONT_MODULE_LVL_KEY, -1));
+        }
     }
 
     public void DealDamage(Collider other, int amount)

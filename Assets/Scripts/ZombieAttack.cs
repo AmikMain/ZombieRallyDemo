@@ -42,5 +42,6 @@ public class ZombieAttack : MonoBehaviour
     {
         if(!carWithinReach) return;
         Car.Instance.GetComponent<Health>().TakeDamage(5, DeathType.Kill);
+        Car.Instance.GetCollisionAudio().Play();
     }
 }

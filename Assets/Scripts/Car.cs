@@ -22,8 +22,7 @@ public class Car : MonoBehaviour
     [SerializeField] private AudioSource tarmacAudio;
     [SerializeField] private AudioSource gravelAudio;
     [SerializeField] private AudioSource collisionAudio;
-    [SerializeField] private float treeCoollisionVelocity1 = 5;
-    [SerializeField] private float treeCoollisionVelocity2 = 15;
+    
 
     private ZombieSpawnTrigger zombieSpawnTrigger;
     private PrometeoCarController prometeoCarController;
@@ -64,6 +63,8 @@ public class Car : MonoBehaviour
         GameManager.Instance.OnLapReload += TeleportToGarage;
         terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
         health.OnDie += HandleDeath;
+
+        
     }
 
     
@@ -71,6 +72,7 @@ public class Car : MonoBehaviour
     private void TeleportToLapStartDelayed()
     {
         Invoke(nameof(TeleportToLapStart), .5f );
+        Debug.Log("Invoking teleport to lap start delayed");
     }
 
     private void TeleportToLapStart()
@@ -108,6 +110,7 @@ public class Car : MonoBehaviour
             prometeoCarController.RRWParticleSystem = RRTarmacParticles;
             prometeoCarController.RLWParticleSystem = RLTarmacParticles;
 
+            prometeoCarController.tireScreechSound.Stop();
             prometeoCarController.tireScreechSound = tarmacAudio;
         }
         else if (type == TerrainType.Gravel)
@@ -119,6 +122,7 @@ public class Car : MonoBehaviour
             prometeoCarController.RRWParticleSystem = RRGravelParticles;
             prometeoCarController.RLWParticleSystem = RLGravelParticles;
 
+            prometeoCarController.tireScreechSound.Stop();
             prometeoCarController.tireScreechSound = gravelAudio;
         }
     }
@@ -137,5 +141,15 @@ public class Car : MonoBehaviour
     public void RemoveFromVisibleZombies(Zombie zombie)
     {
         zombieSpawnTrigger.RemoveFromVisibleZombies(zombie);
+    }
+
+    public void EnterGarage()
+    {
+        Invoke(nameof(TeleportToGarage), 0.1f);
+    }
+
+    public AudioSource GetCollisionAudio()
+    {
+        return collisionAudio;
     }
 }

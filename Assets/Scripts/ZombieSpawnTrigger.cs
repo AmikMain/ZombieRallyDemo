@@ -41,7 +41,7 @@ public class ZombieSpawnTrigger : MonoBehaviour
 
             if(distance <= zombieMoanDistance)
             {
-                if (Random.Range(0f, 1f) > 0.7)
+                if (Random.Range(0f, 1f) > 0.9f)
                 {
                     if (z.GetComponent<Zombie>().moanAudioSource != null)
                     {
@@ -103,4 +103,5 @@ public class ZombieSpawnTrigger : MonoBehaviour
     {
         visibleZombies.Remove(zombie.gameObject);
     }
+
 }
