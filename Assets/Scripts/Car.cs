@@ -63,6 +63,8 @@ public class Car : MonoBehaviour
         GameManager.Instance.OnLapReload += TeleportToGarage;
         terrainDetection.OnTerrainChanged += ChangeTerrainModifiers;
         health.OnDie += HandleDeath;
+
+        
     }
 
     
@@ -70,6 +72,7 @@ public class Car : MonoBehaviour
     private void TeleportToLapStartDelayed()
     {
         Invoke(nameof(TeleportToLapStart), .5f );
+        Debug.Log("Invoking teleport to lap start delayed");
     }
 
     private void TeleportToLapStart()
@@ -138,5 +141,15 @@ public class Car : MonoBehaviour
     public void RemoveFromVisibleZombies(Zombie zombie)
     {
         zombieSpawnTrigger.RemoveFromVisibleZombies(zombie);
+    }
+
+    public void EnterGarage()
+    {
+        Invoke(nameof(TeleportToGarage), 0.1f);
+    }
+
+    public AudioSource GetCollisionAudio()
+    {
+        return collisionAudio;
     }
 }

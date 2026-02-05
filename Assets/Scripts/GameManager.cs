@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,8 +45,9 @@ public class GameManager : MonoBehaviour
     private void CheckLapReload()
     {
         if(!canReloadLap) return;
-        if(Input.anyKeyDown)
+        if(Input.anyKeyDown && !Keyboard.current.spaceKey.wasPressedThisFrame)
         {
+            
             ReloadLap();
         }
     }
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
     public void StartLap()
     {
         OnLapStart?.Invoke();
+        Debug.Log("Seems that button was pressed");
     }
 
     public void CursorSetActive()
@@ -78,5 +81,7 @@ public class GameManager : MonoBehaviour
             Destroy(zombie.gameObject);
         }
     }
+
+    
 
 }

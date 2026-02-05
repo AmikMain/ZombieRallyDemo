@@ -220,7 +220,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateGarageUI()
     {
-        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 676767).ToString();
+        moneyBankText.text = PlayerPrefs.GetInt(GameStats.Instance.COIN_BANK_AMOUNT, 0).ToString();
 
         string frontModulePrice;
         if (FindAnyObjectByType<FrontModule>().GetNextFrontModulePrice() == -1)

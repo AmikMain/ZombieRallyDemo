@@ -8,11 +8,21 @@ public class Armor : MonoBehaviour
 
     public event Action OnArmorLevelUpdated;
 
+    void Start()
+    {
+        if (PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1) != -1)
+        {
+            SetArmor(PlayerPrefs.GetInt(ARMOR_LVL_KEY, -1));
+        }
+    }
+
     private void SetArmor(int lvl)
     {
         SpawnArmorPrefabs(lvl);
 
         ChangeHealth(lvl);
+
+        OnArmorLevelUpdated?.Invoke();   
     }
 
     private void ChangeHealth(int lvl)
@@ -87,7 +97,7 @@ public class Armor : MonoBehaviour
 
             PlayerPrefs.SetInt(GameStats.Instance.COIN_BANK_AMOUNT, moneyLeft);
 
-            OnArmorLevelUpdated?.Invoke();    
+             
         }
     }
 

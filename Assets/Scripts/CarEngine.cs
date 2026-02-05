@@ -21,6 +21,11 @@ public class CarEngine : MonoBehaviour
 
         maxSpeed = baseMaxSpeed;
         acceleration = baseAcceleration;
+
+        if (PlayerPrefs.GetInt(CAR_ENGINE_LVL_KEY, -1) != -1)
+        {
+            SetEngineLevel(PlayerPrefs.GetInt(CAR_ENGINE_LVL_KEY, -1));
+        }
     }
 
     void SetEngineLevel(int lvl)

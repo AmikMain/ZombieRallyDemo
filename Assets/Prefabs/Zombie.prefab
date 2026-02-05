@@ -254,6 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
+  audioMixerGroup: {fileID: 24300002, guid: 12d11470ea2cc5e4c8f5b71acf11cd8c, type: 2}
   deathAudioSource: {fileID: 661887057512410058}
   moanAudioSource: {fileID: 6502865309156699152}
 --- !u!114 &5659502578259136712
